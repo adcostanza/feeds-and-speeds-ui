@@ -12,8 +12,7 @@ export class Cutter {
     public length: number,
     public flutes: number,
     public shankDiameter: number,
-    public overallStickout: number,
-    public maximumDeflection: number
+    public overallStickout: number
   ) {}
 
   get youngsModulus(): number {
@@ -26,6 +25,6 @@ export class Cutter {
 }
 
 export const DefaultCutters = [
-  new Cutter("201", CutterMaterial.carbide, 0.25, 0.75, 3, 0.25, 1, 0.001),
-  new Cutter("205e", CutterMaterial.carbide, 0.25, 1, 2, 0.25, 1.25, 0.001),
+  new Cutter("201", CutterMaterial.carbide, 0.25, 0.75, 3, 0.25, 1),
+  new Cutter("205e", CutterMaterial.carbide, 0.25, 1, 2, 0.25, 1.25),
 ];

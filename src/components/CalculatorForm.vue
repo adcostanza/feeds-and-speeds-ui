@@ -9,10 +9,12 @@
       ></v-text-field>
 
       <v-text-field
-        v-model.number="kFactor"
-        :rules="[requiredRule('K Factor')]"
-        label="K Factor"
+        v-for="numberField of numberFields"
+        v-model.number="numberField.property"
+        :rules="[requiredRule(numberField.name)]"
+        :label="numberField.name"
         required
+        :key="numberField.property"
       ></v-text-field>
     </div>
     <v-btn
@@ -38,7 +40,10 @@
 <script lang="ts">
 import Component from "vue-class-component";
 import { Prop, Vue } from "vue-property-decorator";
-import { Calculator } from "@/utils/equations";
+import { Calculator } from "@/utils/calculator";
+import { DefaultMachine, Machine } from "@/utils/machine";
+import { Cutter, DefaultCutters } from "@/utils/cutter";
+import { DefaultMaterials, Material } from "@/utils/material";
 
 @Component
 export default class CalculatorForm extends Vue {
@@ -46,16 +51,32 @@ export default class CalculatorForm extends Vue {
   @Prop({ required: true }) updateCalculator!: (calculator: Calculator) => void;
   @Prop({ required: true }) deleteCalculator!: () => void;
 
-  name = "";
-  kFactor = 10;
+  valid = true;
+  name = "New Calculator";
+  machine: Machine = DefaultMachine;
+  cutter: Cutter = DefaultCutters[0];
+  material: Material = DefaultMaterials[0];
+
+  numberFields = [
+    { property: "chipload", name: "Chipload" },
+    { property: "woc", name: "Width of Cut" },
+    { property: "doc", name: "Depth of Cut" },
+    { property: "rpm", name: "RPM" },
+    {
+      property: "maxAcceptableDeflection",
+      name: "Maximum Acceptable Deflection %",
+    },
+  ];
 
   created() {
     this.name = this.calculator.name;
-    this.kFactor = this.calculator.kFactor;
+    this.machine = this.calculator.machine;
+    this.cutter = this.calculator.cutter;
+    for (const numberField of this.numberFields) {
+      this[numberField.property] = this.calculator[numberField.property];
+    }
   }
 
-  valid = true;
-  name = "";
   requiredRule(name: string) {
     return (v) => !!v || `${name} is required`;
   }
@@ -63,8 +84,21 @@ export default class CalculatorForm extends Vue {
   validate() {
     //@ts-ignore
     this.$refs.form.validate();
-    this.updateCalculator(new Calculator(this.name, this.kFactor));
+    this.updateCalculator(
+      new Calculator(
+        this.name,
+        this.machine,
+        this.cutter,
+        this.material,
+        this.chipload,
+        this.woc,
+        this.doc,
+        this.rpm,
+        this.maxAcceptableDeflection
+      )
+    );
   }
+
   reset() {
     //@ts-ignore
     this.$refs.form.reset();
