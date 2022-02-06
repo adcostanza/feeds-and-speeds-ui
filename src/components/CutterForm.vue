@@ -27,7 +27,7 @@
     <v-btn
       color="error"
       class="mr-4"
-      @click="deleteMaterial"
+      @click="deleteCutter"
       style="margin: 18px"
     >
       <v-icon>mdi-delete</v-icon>Delete
@@ -38,20 +38,20 @@
 <script lang="ts">
 import Component from "vue-class-component";
 import { Prop, Vue } from "vue-property-decorator";
-import { Material } from "@/utils/material";
+import { Cutter } from "@/utils/cutter";
 
 @Component
-export default class MaterialForm extends Vue {
-  @Prop({ required: true }) material!: Material;
-  @Prop({ required: true }) updateMaterial!: (material: Material) => void;
-  @Prop({ required: true }) deleteMaterial!: () => void;
+export default class CutterForm extends Vue {
+  @Prop({ required: true }) cutter!: Cutter;
+  @Prop({ required: true }) updateCutter!: (cutter: Cutter) => void;
+  @Prop({ required: true }) deleteCutter!: () => void;
 
   name = "";
   kFactor = 10;
 
   created() {
-    this.name = this.material.name;
-    this.kFactor = this.material.kFactor;
+    this.name = this.cutter.name;
+    this.kFactor = this.cutter.kFactor;
   }
 
   valid = true;
@@ -63,7 +63,7 @@ export default class MaterialForm extends Vue {
   validate() {
     //@ts-ignore
     this.$refs.form.validate();
-    this.updateMaterial(new Material(this.name, this.kFactor));
+    this.updateCutter(new Cutter(this.name, this.kFactor));
   }
   reset() {
     //@ts-ignore

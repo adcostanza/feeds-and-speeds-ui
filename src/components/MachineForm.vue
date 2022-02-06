@@ -1,7 +1,7 @@
 <template>
   <v-form ref="form" v-model="valid" lazy-validation>
     <v-toolbar color="primary" dark>
-      <v-icon style="margin-right:8px">mdi-robot</v-icon>
+      <v-icon style="margin-right: 8px">mdi-robot</v-icon>
       <v-toolbar-title>Machine Configuration</v-toolbar-title>
     </v-toolbar>
     <v-card elevation="2" style="margin-bottom: 18px">
@@ -75,7 +75,7 @@
 <script lang="ts">
 import Component from "vue-class-component";
 import { Vue } from "vue-property-decorator";
-import { DefaultMachine, Machine, Router } from "@/utils/machine";
+import { DefaultMachine, Machine } from "@/utils/machine";
 
 @Component
 export default class MachineForm extends Vue {
