@@ -14,7 +14,10 @@ const piecewise = (
 };
 
 export const adjusted_chipload_latex = piecewise([
-  { expr: non_chip_thinning_chipload.toTeX(), condition: "\\quad \\quad \\quad woc > D_{cutter} / 2" },
+  {
+    expr: non_chip_thinning_chipload.toTeX(),
+    condition: "\\quad \\quad \\quad woc > D_{cutter} / 2",
+  },
   { expr: chip_thinning_chipload.toTeX(), condition: "else" },
 ]);
 
