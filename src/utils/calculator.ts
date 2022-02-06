@@ -13,7 +13,7 @@ export class Calculator {
     public rpm: number,
     public maxAcceptableDeflection: number
   ) {}
-  get adjusted_chipload(): number {
+  get adjustedChipload(): number {
     if (this.woc > this.cutter.diameter / 2) {
       return this.chipload;
     } else {
@@ -25,41 +25,41 @@ export class Calculator {
   }
 
   get feedrate(): number {
-    return this.cutter.flutes * this.rpm * this.adjusted_chipload;
+    return this.cutter.flutes * this.rpm * this.adjustedChipload;
   }
 
-  get material_removal_rate(): number {
+  get materialRemovalRate(): number {
     return this.feedrate * this.doc * this.woc;
   }
 
-  get power_usage(): number {
-    return this.material_removal_rate / this.material.kFactor;
+  get powerUsage(): number {
+    return this.materialRemovalRate / this.material.kFactor;
   }
 
   get torque(): number {
-    return (this.power_usage * 63024.0) / this.rpm;
+    return (this.powerUsage * 63024.0) / this.rpm;
   }
 
-  get machine_force(): number {
+  get machineForce(): number {
     return this.torque / (this.cutter.diameter / 2);
   }
 
-  get machine_force_percent(): number {
-    return this.machine_force / this.machine.maximumMachineForce;
+  get machineForcePercent(): number {
+    return this.machineForce / this.machine.maximumMachineForce;
   }
 
-  get available_power_percent(): number {
-    return this.power_usage / this.machine.router.outputPower;
+  get availablePowerPercent(): number {
+    return this.powerUsage / this.machine.router.outputPower;
   }
 
-  get router_cutter_power_increase(): number {
-    return this.power_usage * 745.7;
+  get routerCutterPowerIncrease(): number {
+    return this.powerUsage * 745.7;
   }
 
-  get max_deflection(): number {
+  get maxDeflection(): number {
     if (this.cutter.diameter < this.cutter.shankDiameter) {
       return (
-        this.machine_force *
+        this.machineForce *
         (Math.pow(this.cutter.length, 3) /
           (3 *
             this.cutter.youngsModulus *
@@ -71,14 +71,14 @@ export class Calculator {
       );
     } else if (this.cutter.diameter == this.cutter.shankDiameter) {
       return (
-        (this.machine_force * Math.pow(this.cutter.overallStickout, 3)) /
+        (this.machineForce * Math.pow(this.cutter.overallStickout, 3)) /
         (3 *
           this.cutter.youngsModulus *
           ((Math.PI * Math.pow(this.cutter.diameter / 2, 4)) / 4))
       );
     } else {
       return (
-        (this.machine_force * Math.pow(this.cutter.overallStickout, 3)) /
+        (this.machineForce * Math.pow(this.cutter.overallStickout, 3)) /
         ((3 *
           this.cutter.youngsModulus *
           Math.PI *
@@ -88,8 +88,8 @@ export class Calculator {
     }
   }
 
-  get max_deflection_percent(): number {
-    return this.max_deflection / this.maxAcceptableDeflection;
+  get maxDeflectionPercent(): number {
+    return this.maxDeflection / this.maxAcceptableDeflection;
   }
 }
 
