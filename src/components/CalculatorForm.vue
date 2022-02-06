@@ -9,12 +9,12 @@
       ></v-text-field>
 
       <v-text-field
-        v-for="numberField of numberFields"
-        v-model.number="numberField.property"
-        :rules="[requiredRule(numberField.name)]"
-        :label="numberField.name"
+        v-for="numberField of Object.keys(numberFields)"
+        v-model.number="numberFields[numberField].value"
+        :rules="[requiredRule(numberFields[numberField].name)]"
+        :label="numberFields[numberField].name"
         required
-        :key="numberField.property"
+        :key="numberField"
       ></v-text-field>
     </div>
     <v-btn
@@ -57,23 +57,23 @@ export default class CalculatorForm extends Vue {
   cutter: Cutter = DefaultCutters[0];
   material: Material = DefaultMaterials[0];
 
-  numberFields = [
-    { property: "chipload", name: "Chipload" },
-    { property: "woc", name: "Width of Cut" },
-    { property: "doc", name: "Depth of Cut" },
-    { property: "rpm", name: "RPM" },
-    {
-      property: "maxAcceptableDeflection",
+  numberFields = {
+    chipload: { name: "Chipload", value: 0 },
+    woc: { name: "Width of Cut", value: 0 },
+    doc: { name: "Depth of Cut", value: 0 },
+    rpm: { name: "RPM", value: 0 },
+    maxAcceptableDeflection: {
       name: "Maximum Acceptable Deflection %",
+      value: 0,
     },
-  ];
+  };
 
   created() {
     this.name = this.calculator.name;
     this.machine = this.calculator.machine;
     this.cutter = this.calculator.cutter;
-    for (const numberField of this.numberFields) {
-      this[numberField.property] = this.calculator[numberField.property];
+    for (const numberField of Object.keys(this.numberFields)) {
+      this.numberFields[numberField].value = this.calculator[numberField];
     }
   }
 
@@ -90,11 +90,11 @@ export default class CalculatorForm extends Vue {
         this.machine,
         this.cutter,
         this.material,
-        this.chipload,
-        this.woc,
-        this.doc,
-        this.rpm,
-        this.maxAcceptableDeflection
+        this.numberFields.chipload,
+        this.numberFields.woc,
+        this.numberFields.doc,
+        this.numberFields.rpm,
+        this.numberFields.maxAcceptableDeflection
       )
     );
   }
