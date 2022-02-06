@@ -46,7 +46,7 @@ export default class Materials extends Vue {
       if (material.name !== name) {
         delete this.materials[name];
       }
-      this.materials[material.name] = material;
+      this.materials = { ...this.materials, [material.name]: material };
     };
   }
 
