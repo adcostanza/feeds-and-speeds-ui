@@ -37,8 +37,11 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
-import { DefaultCalculators, Calculator } from "@/utils/calculator";
+import { Calculator, DefaultCalculators } from "@/utils/calculator";
 import CalculatorForm from "@/components/CalculatorForm.vue";
+import { DefaultMachine, Machine } from "@/utils/machine";
+import { DefaultMaterials, Material } from "@/utils/material";
+import { Cutter, DefaultCutters } from "@/utils/cutter";
 
 @Component({ components: { CalculatorForm } })
 export default class Calculators extends Vue {
@@ -50,6 +53,10 @@ export default class Calculators extends Vue {
     {}
   );
 
+  defaultMachine: Machine = null;
+  defaultMaterial: Material = null;
+  defaultCutter: Cutter = null;
+
   created() {
     const storedCalculators = localStorage.getItem("calculators");
     if (storedCalculators !== null) {
@@ -57,6 +64,14 @@ export default class Calculators extends Vue {
     } else {
       localStorage.setItem("calculators", JSON.stringify(this.calculators));
     }
+
+    this.defaultMachine = localStorage.getItem("machine") || DefaultMachine;
+    const storedMaterials = localStorage.getItem("materials");
+    this.defaultMaterial = storedMaterials
+      ? storedMaterials[0]
+      : DefaultMaterials[0];
+    const storedCutters = localStorage.getItem("cutters");
+    this.defaultCutter = storedCutters ? storedCutters[0] : DefaultCutters[0];
   }
 
   updateCalculator(name: string): (calculator: Calculator) => void {
@@ -83,7 +98,17 @@ export default class Calculators extends Vue {
   addNewCalculator() {
     this.calculators = {
       ...this.calculators,
-      "New Calculator": new Calculator("New Calculator", 10),
+      "New Calculator": new Calculator(
+        "New Calculator",
+        this.defaultMachine,
+        this.defaultCutter,
+        this.defaultMaterial,
+        0.002,
+        this.defaultCutter.diameter * 0.5,
+        this.defaultCutter.diameter * 2,
+        18000,
+        0.001
+      ),
     };
   }
 }

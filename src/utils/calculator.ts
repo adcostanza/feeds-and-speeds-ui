@@ -4,6 +4,7 @@ import { Material } from "@/utils/material";
 
 export class Calculator {
   constructor(
+    public name: string,
     public machine: Machine,
     public cutter: Cutter,
     public material: Material,
