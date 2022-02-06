@@ -9,7 +9,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { adjusted_chipload_latex, chip_thinning_chipload } from "@/utils/calculator";
+import { adjusted_chipload_latex, chip_thinning_chipload } from "@/utils/equations";
 import nerdamer from "nerdamer";
 
 @Component({
