@@ -1,42 +1,72 @@
 <template>
   <v-form ref="form" v-model="valid" lazy-validation>
-    <v-text-field
-      v-model="machine.name"
-      :counter="10"
-      :rules="nameRules"
-      label="Name"
-      required
-    ></v-text-field>
+    <v-card elevation="2" style="margin-bottom: 18px">
+      <v-card-title>Machine Configuration</v-card-title>
+      <div style="padding: 20px; padding-top: 0px">
+        <v-text-field
+          v-model="machine.name"
+          :counter="10"
+          :rules="nameRules"
+          label="Name"
+          required
+        ></v-text-field>
 
-    <v-text-field
-      v-model="email"
-      :rules="emailRules"
-      label="E-mail"
-      required
-    ></v-text-field>
+        <v-text-field
+          v-model.number="machine.maximumMachineForce"
+          :rules="emailRules"
+          label="Maximum Machine Force (lbf)"
+          required
+        ></v-text-field>
+      </div>
+    </v-card>
+    <v-card elevation="2" style="margin-bottom: 18px">
+      <v-card-title>Router Configuration</v-card-title>
+      <div style="padding: 20px; padding-top: 0px">
+        <v-text-field
+          v-model.number="machine.router.inputVoltage"
+          :counter="10"
+          :rules="nameRules"
+          label="Input Voltage"
+          required
+        ></v-text-field>
+        <v-text-field
+          v-model.number="machine.router.inputCurrent"
+          :counter="10"
+          :rules="nameRules"
+          label="Input Current"
+          required
+        ></v-text-field>
+        <v-text-field
+          v-model.number="machine.router.efficiency"
+          :counter="10"
+          :rules="nameRules"
+          label="Efficiency"
+          required
+        ></v-text-field>
+        <v-text-field
+          v-model.number="machine.router.ratedSpeed"
+          :counter="10"
+          :rules="nameRules"
+          label="Rated Speed"
+          required
+        ></v-text-field>
+      </div>
+    </v-card>
+    <v-card elevation="2">
+      <v-btn
+        :disabled="!valid"
+        color="success"
+        class="mr-4"
+        @click="validate"
+        style="margin: 18px"
+      >
+        Submit
+      </v-btn>
 
-    <v-select
-      v-model="select"
-      :items="items"
-      :rules="[(v) => !!v || 'Item is required']"
-      label="Item"
-      required
-    ></v-select>
+      <!--      <v-btn color="error" class="mr-4" @click="reset"> Reset Form </v-btn>-->
 
-    <v-checkbox
-      v-model="checkbox"
-      :rules="[(v) => !!v || 'You must agree to continue!']"
-      label="Do you agree?"
-      required
-    ></v-checkbox>
-
-    <v-btn :disabled="!valid" color="success" class="mr-4" @click="validate">
-      Validate
-    </v-btn>
-
-    <v-btn color="error" class="mr-4" @click="reset"> Reset Form </v-btn>
-
-    <v-btn color="warning" @click="resetValidation"> Reset Validation </v-btn>
+      <!--      <v-btn color="warning" @click="resetValidation"> Reset Validation </v-btn>-->
+    </v-card>
   </v-form>
 </template>
 
