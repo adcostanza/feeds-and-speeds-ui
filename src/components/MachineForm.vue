@@ -5,15 +5,14 @@
       <div style="padding: 20px; padding-top: 0px">
         <v-text-field
           v-model="machine.name"
-          :counter="10"
-          :rules="nameRules"
+          :rules="[requiredRule('Name')]"
           label="Name"
           required
         ></v-text-field>
 
         <v-text-field
           v-model.number="machine.maximumMachineForce"
-          :rules="emailRules"
+          :rules="[requiredRule('Maximum Machine Force')]"
           label="Maximum Machine Force (lbf)"
           required
         ></v-text-field>
@@ -24,29 +23,25 @@
       <div style="padding: 20px; padding-top: 0px">
         <v-text-field
           v-model.number="machine.router.inputVoltage"
-          :counter="10"
-          :rules="nameRules"
+          :rules="[requiredRule('Input Voltage')]"
           label="Input Voltage"
           required
         ></v-text-field>
         <v-text-field
           v-model.number="machine.router.inputCurrent"
-          :counter="10"
-          :rules="nameRules"
+          :rules="[requiredRule('Input Current')]"
           label="Input Current"
           required
         ></v-text-field>
         <v-text-field
           v-model.number="machine.router.efficiency"
-          :counter="10"
-          :rules="nameRules"
+          :rules="[requiredRule('Efficiency')]"
           label="Efficiency"
           required
         ></v-text-field>
         <v-text-field
           v-model.number="machine.router.ratedSpeed"
-          :counter="10"
-          :rules="nameRules"
+          :rules="[requiredRule('Rated Speed')]"
           label="Rated Speed"
           required
         ></v-text-field>
@@ -62,6 +57,9 @@
       >
         Submit
       </v-btn>
+      <v-btn color="success" class="mr-4" @click="clear" style="margin: 18px">
+        Clear to Default
+      </v-btn>
 
       <!--      <v-btn color="error" class="mr-4" @click="reset"> Reset Form </v-btn>-->
 
@@ -73,30 +71,36 @@
 <script lang="ts">
 import Component from "vue-class-component";
 import { Vue } from "vue-property-decorator";
-import { DefaultMachine, Machine } from "@/utils/machine";
+import { DefaultMachine, Machine, Router } from "@/utils/machine";
 
 @Component
 export default class MachineForm extends Vue {
   public machine: Machine = DefaultMachine;
 
+  created() {
+    const storedMachine = localStorage.getItem("machine");
+    if (storedMachine !== null) {
+      this.machine = JSON.parse(storedMachine);
+    } else {
+      localStorage.setItem("machine", JSON.stringify(this.machine));
+    }
+  }
+
   valid = true;
   name = "";
-  nameRules = [
-    (v) => !!v || "Name is required",
-    (v) => (v && v.length <= 10) || "Name must be less than 10 characters",
-  ];
-  email = "";
-  emailRules = [
-    (v) => !!v || "E-mail is required",
-    (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
-  ];
-  select = null;
-  items = ["Item 1", "Item 2", "Item 3", "Item 4"];
-  checkbox = false;
+  requiredRule(name: string) {
+    return (v) => !!v || `${name} is required`;
+  }
 
   validate() {
     //@ts-ignore
     this.$refs.form.validate();
+    localStorage.setItem("machine", JSON.stringify(this.machine));
+  }
+
+  clear() {
+    this.machine = DefaultMachine;
+    localStorage.removeItem("machine");
   }
   reset() {
     //@ts-ignore
