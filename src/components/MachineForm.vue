@@ -1,7 +1,11 @@
 <template>
   <v-form ref="form" v-model="valid" lazy-validation>
+    <v-toolbar color="primary" dark>
+      <v-icon style="margin-right:8px">mdi-robot</v-icon>
+      <v-toolbar-title>Machine Configuration</v-toolbar-title>
+    </v-toolbar>
     <v-card elevation="2" style="margin-bottom: 18px">
-      <v-card-title>Machine Configuration</v-card-title>
+      <v-card-title>Machine</v-card-title>
       <div style="padding: 20px; padding-top: 0px">
         <v-text-field
           v-model="machine.name"
@@ -19,7 +23,7 @@
       </div>
     </v-card>
     <v-card elevation="2" style="margin-bottom: 18px">
-      <v-card-title>Router Configuration</v-card-title>
+      <v-card-title>Router</v-card-title>
       <div style="padding: 20px; padding-top: 0px">
         <v-text-field
           v-model.number="machine.router.inputVoltage"
@@ -88,6 +92,7 @@ export default class MachineForm extends Vue {
 
   valid = true;
   name = "";
+
   requiredRule(name: string) {
     return (v) => !!v || `${name} is required`;
   }
@@ -102,10 +107,12 @@ export default class MachineForm extends Vue {
     this.machine = DefaultMachine;
     localStorage.removeItem("machine");
   }
+
   reset() {
     //@ts-ignore
     this.$refs.form.reset();
   }
+
   resetValidation() {
     //@ts-ignore
     this.$refs.form.resetValidation();
