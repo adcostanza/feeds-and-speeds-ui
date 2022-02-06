@@ -1,9 +1,12 @@
 <template>
-  <div>Machine stuff</div>
+  <MachineForm />
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-@Component
+import MachineForm from "@/components/MachineForm.vue";
+@Component({
+  components: { MachineForm },
+})
 export default class Machine extends Vue {}
 </script>
