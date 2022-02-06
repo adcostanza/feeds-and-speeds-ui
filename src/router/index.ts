@@ -29,6 +29,12 @@ const routes: Array<RouteConfig> = [
     component: () =>
       import(/* webpackChunkName: "calculator" */ "../views/Calculator.vue"),
   },
+  {
+    path: "/settings",
+    name: "Settings",
+    component: () =>
+      import(/* webpackChunkName: "calculator" */ "../views/Settings.vue"),
+  },
 ];
 
 const router = new VueRouter({
