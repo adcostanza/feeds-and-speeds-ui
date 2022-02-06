@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-toolbar color="primary" dark>
-      <v-icon style="margin-right:8px">mdi-cube</v-icon>
+      <v-icon style="margin-right: 8px">mdi-cube</v-icon>
       <v-toolbar-title>Materials Configuration</v-toolbar-title>
     </v-toolbar>
     <v-card elevation="2">
