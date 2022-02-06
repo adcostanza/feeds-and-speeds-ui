@@ -9,19 +9,25 @@ const routes: Array<RouteConfig> = [
     path: "/",
     name: "Machine",
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/Machine.vue"),
+      import(/* webpackChunkName: "machine" */ "../views/Machine.vue"),
+  },
+  {
+    path: "/materials",
+    name: "Materials",
+    component: () =>
+      import(/* webpackChunkName: "materials" */ "../views/Materials.vue"),
   },
   {
     path: "/cutters",
     name: "Cutters",
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/Cutters.vue"),
+      import(/* webpackChunkName: "cutters" */ "../views/Cutters.vue"),
   },
   {
     path: "/calculator",
     name: "Calculator",
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/Calculator.vue"),
+      import(/* webpackChunkName: "calculator" */ "../views/Calculator.vue"),
   },
 ];
 

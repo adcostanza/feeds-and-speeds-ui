@@ -49,6 +49,7 @@ export default class extends Vue {
   drawer = null;
   items = [
     { text: "Machine", icon: "mdi-robot", to: "/" },
+    { text: "Materials", icon: "mdi-cube", to: "/materials" },
     { text: "Cutters", icon: "mdi-saw-blade", to: "/cutters" },
     { text: "Calculator", icon: "mdi-calculator", to: "/calculator" },
   ];
