@@ -24,6 +24,14 @@
     >
       Submit
     </v-btn>
+    <v-btn
+      color="error"
+      class="mr-4"
+      @click="deleteMaterial"
+      style="margin: 18px"
+    >
+      <v-icon>mdi-delete</v-icon>Delete
+    </v-btn>
   </v-form>
 </template>
 
@@ -37,6 +45,7 @@ import { Material } from "@/utils/material";
 export default class MaterialForm extends Vue {
   @Prop({ required: true }) material!: Material;
   @Prop({ required: true }) updateMaterial!: (material: Material) => void;
+  @Prop({ required: true }) deleteMaterial!: () => void;
 
   name = "";
   kFactor = 10;

@@ -17,10 +17,20 @@
             <material-form
               :material="material"
               :update-material="updateMaterial(material.name)"
+              :delete-material="deleteMaterial(material.name)"
             />
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
+    </v-card>
+    <v-card>
+      <v-btn
+        color="success"
+        class="mr-4"
+        @click="addNewMaterial"
+        style="margin: 18px"
+        ><v-icon>mdi-plus</v-icon>Add New Material</v-btn
+      >
     </v-card>
   </div>
 </template>
@@ -58,9 +68,23 @@ export default class Materials extends Vue {
     };
   }
 
+  deleteMaterial(name: string): () => void {
+    return () => {
+      delete this.materials[name];
+      this.materials = { ...this.materials };
+    };
+  }
+
   @Watch("materials", { deep: true })
   materialsUpdated(): void {
     localStorage.setItem("materials", JSON.stringify(this.materials));
+  }
+
+  addNewMaterial() {
+    this.materials = {
+      ...this.materials,
+      "New Material": new Material("New Material", 10),
+    };
   }
 }
 </script>
