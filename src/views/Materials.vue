@@ -37,12 +37,12 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
-import { Material, Materials } from "@/utils/material";
+import { Material, materialsStore } from "@/utils/material";
 import MaterialForm from "@/components/MaterialForm.vue";
 
 @Component({ components: { MaterialForm } })
-export default class MaterialsView extends Vue {
-  materials: Record<string, Material> = Materials.fromStore().materials.reduce(
+export default class Materials extends Vue {
+  materials: Record<string, Material> = materialsStore.get().reduce(
     (acc, ea) => ({
       ...acc,
       [ea.name]: ea,
@@ -68,7 +68,7 @@ export default class MaterialsView extends Vue {
 
   @Watch("materials", { deep: true })
   materialsUpdated(): void {
-    Materials.store(Object.values(this.materials));
+    materialsStore.set(Object.values(this.materials));
   }
 
   addNewMaterial() {
