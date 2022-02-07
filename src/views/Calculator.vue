@@ -37,15 +37,15 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
-import { Calculator, DefaultCalculators } from "@/utils/calculator";
+import { Calculator, calculatorsStore } from "@/utils/calculator";
 import CalculatorForm from "@/components/CalculatorForm.vue";
-import { DefaultMachine, Machine } from "@/utils/machine";
-import { DefaultMaterials, Material } from "@/utils/material";
-import { Cutter, DefaultCutters } from "@/utils/cutter";
+import { Machine, machineStore } from "@/utils/machine";
+import { Material, materialsStore } from "@/utils/material";
+import { Cutter, cuttersStore } from "@/utils/cutter";
 
 @Component({ components: { CalculatorForm } })
 export default class Calculators extends Vue {
-  calculators: Record<string, Calculator> = DefaultCalculators.reduce(
+  calculators: Record<string, Calculator> = calculatorsStore.get().reduce(
     (acc, ea) => ({
       ...acc,
       [ea.name]: ea,
@@ -53,27 +53,9 @@ export default class Calculators extends Vue {
     {}
   );
 
-  defaultMachine: Machine = null;
-  defaultMaterial: Material = null;
-  defaultCutter: Cutter = null;
-
-  created() {
-    const storedCalculators = localStorage.getItem("calculators");
-    if (storedCalculators !== null) {
-      this.calculators = JSON.parse(storedCalculators);
-    } else {
-      localStorage.setItem("calculators", JSON.stringify(this.calculators));
-    }
-
-    this.defaultMachine =
-      JSON.parse(localStorage.getItem("machine")) || DefaultMachine;
-    const storedMaterials = JSON.parse(localStorage.getItem("materials"));
-    this.defaultMaterial = storedMaterials
-      ? storedMaterials[0]
-      : DefaultMaterials[0];
-    const storedCutters = JSON.parse(localStorage.getItem("cutters"));
-    this.defaultCutter = storedCutters ? storedCutters[0] : DefaultCutters[0];
-  }
+  defaultMachine: Machine = machineStore.get();
+  defaultMaterial: Material = materialsStore.get()[0];
+  defaultCutter: Cutter = cuttersStore.get()[0];
 
   updateCalculator(name: string): (calculator: Calculator) => void {
     return (calculator: Calculator) => {
@@ -93,7 +75,7 @@ export default class Calculators extends Vue {
 
   @Watch("calculators", { deep: true })
   calculatorsUpdated(): void {
-    localStorage.setItem("calculators", JSON.stringify(this.calculators));
+    calculatorsStore.set(Object.values(this.calculators));
   }
 
   addNewCalculator() {

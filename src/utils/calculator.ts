@@ -1,6 +1,7 @@
 import { Machine } from "@/utils/machine";
 import { Cutter } from "@/utils/cutter";
 import { Material } from "@/utils/material";
+import { Store } from "@/utils/store";
 
 export class Calculator {
   constructor(
@@ -20,7 +21,8 @@ export class Calculator {
     } else {
       return (
         (this.cutter.diameter * this.chipload) /
-        (2.0 * Math.sqrt(this.cutter.diameter * this.woc - Math.pow(this.woc, 2)))
+        (2.0 *
+          Math.sqrt(this.cutter.diameter * this.woc - Math.pow(this.woc, 2)))
       );
     }
   }
@@ -94,4 +96,4 @@ export class Calculator {
   }
 }
 
-export const DefaultCalculators = [];
+export const calculatorsStore = new Store<Calculator[]>("calculators", []);

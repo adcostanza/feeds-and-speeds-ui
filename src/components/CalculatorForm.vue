@@ -53,9 +53,9 @@ export default class CalculatorForm extends Vue {
 
   valid = true;
   name = "New Calculator";
-  machine: Machine = DefaultMachine;
-  cutter: Cutter = DefaultCutters[0];
-  material: Material = DefaultMaterials[0];
+  machine: Machine = null;
+  cutter: Cutter = null;
+  material: Material = null;
 
   numberFields = {
     chipload: { name: "Chipload", value: 0 },

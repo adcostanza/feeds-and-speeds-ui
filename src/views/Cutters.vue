@@ -37,27 +37,18 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
-import { DefaultCutters, Cutter, CutterMaterial } from "@/utils/cutter";
+import { Cutter, CutterMaterial, cuttersStore } from "@/utils/cutter";
 import CutterForm from "@/components/CutterForm.vue";
 
 @Component({ components: { CutterForm } })
 export default class Cutters extends Vue {
-  cutters: Record<string, Cutter> = DefaultCutters.reduce(
+  cutters: Record<string, Cutter> = cuttersStore.get().reduce(
     (acc, ea) => ({
       ...acc,
       [ea.name]: ea,
     }),
     {}
   );
-
-  created() {
-    const storedCutters = localStorage.getItem("cutters");
-    if (storedCutters !== null) {
-      this.cutters = JSON.parse(storedCutters);
-    } else {
-      localStorage.setItem("cutters", JSON.stringify(this.cutters));
-    }
-  }
 
   updateCutter(name: string): (cutter: Cutter) => void {
     return (cutter: Cutter) => {
@@ -77,7 +68,7 @@ export default class Cutters extends Vue {
 
   @Watch("cutters", { deep: true })
   cuttersUpdated(): void {
-    localStorage.setItem("cutters", JSON.stringify(this.cutters));
+    cuttersStore.set(Object.values(this.cutters));
   }
 
   addNewCutter() {

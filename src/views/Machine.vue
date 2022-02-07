@@ -5,6 +5,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import MachineForm from "@/components/MachineForm.vue";
+
 @Component({
   components: { MachineForm },
 })
