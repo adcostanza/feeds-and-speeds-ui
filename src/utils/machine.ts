@@ -1,4 +1,4 @@
-import { Storable } from "@/utils/storable";
+import { Store } from "@/utils/store";
 
 export class Router {
   constructor(
@@ -17,19 +17,15 @@ export class Router {
   }
 }
 
-export class Machine extends Storable {
+export class Machine {
   constructor(
     public name: string,
     public maximumMachineForce: number,
     public router: Router
-  ) {
-    super();
-  }
-
-  static storeKey = "machine";
-  static default = new Machine(
-    "Adam's Shapeoko",
-    18.0,
-    new Router(120.0, 6.5, 0.6, 30000.0)
-  );
+  ) {}
 }
+
+export const machineStore = new Store<Machine>(
+  "machine",
+  new Machine("Adam's Shapeoko", 18.0, new Router(120.0, 6.5, 0.6, 30000.0))
+);

@@ -75,11 +75,11 @@
 <script lang="ts">
 import Component from "vue-class-component";
 import { Vue } from "vue-property-decorator";
-import { Machine } from "@/utils/machine";
+import { Machine, machineStore } from "@/utils/machine";
 
 @Component
 export default class MachineForm extends Vue {
-  public machine: Machine = Machine.fromStore();
+  public machine: Machine = machineStore.get();
 
   valid = true;
   name = "";
@@ -91,12 +91,12 @@ export default class MachineForm extends Vue {
   validate() {
     //@ts-ignore
     this.$refs.form.validate();
-    Machine.store(this.machine);
+    machineStore.set(this.machine);
   }
 
   clear() {
-    Machine.clear();
-    this.machine = Machine.fromStore();
+    machineStore.clear();
+    this.machine = machineStore.get();
   }
 
   reset() {

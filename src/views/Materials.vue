@@ -37,27 +37,18 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
-import { DefaultMaterials, Material } from "@/utils/material";
+import { Material, Materials } from "@/utils/material";
 import MaterialForm from "@/components/MaterialForm.vue";
 
 @Component({ components: { MaterialForm } })
-export default class Materials extends Vue {
-  materials: Record<string, Material> = DefaultMaterials.reduce(
+export default class MaterialsView extends Vue {
+  materials: Record<string, Material> = Materials.fromStore().materials.reduce(
     (acc, ea) => ({
       ...acc,
       [ea.name]: ea,
     }),
     {}
   );
-
-  created() {
-    const storedMaterials = localStorage.getItem("materials");
-    if (storedMaterials !== null) {
-      this.materials = JSON.parse(storedMaterials);
-    } else {
-      localStorage.setItem("materials", JSON.stringify(this.materials));
-    }
-  }
 
   updateMaterial(name: string): (material: Material) => void {
     return (material: Material) => {
@@ -77,7 +68,7 @@ export default class Materials extends Vue {
 
   @Watch("materials", { deep: true })
   materialsUpdated(): void {
-    localStorage.setItem("materials", JSON.stringify(this.materials));
+    Materials.store(Object.values(this.materials));
   }
 
   addNewMaterial() {
