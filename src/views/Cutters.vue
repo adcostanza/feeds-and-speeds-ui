@@ -11,7 +11,7 @@
           :key="i"
         >
           <v-expansion-panel-header
-          >{{ cutter.name }}
+            >{{ cutter.name }}
           </v-expansion-panel-header>
           <v-expansion-panel-content>
             <cutter-form
@@ -29,7 +29,7 @@
         class="mr-4"
         @click="addNewCutter"
         style="margin: 18px"
-      ><v-icon>mdi-plus</v-icon>Add New Cutter</v-btn
+        ><v-icon>mdi-plus</v-icon>Add New Cutter</v-btn
       >
     </v-card>
   </div>
@@ -37,7 +37,7 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
-import { DefaultCutters, Cutter } from "@/utils/cutter";
+import { DefaultCutters, Cutter, CutterMaterial } from "@/utils/cutter";
 import CutterForm from "@/components/CutterForm.vue";
 
 @Component({ components: { CutterForm } })
@@ -83,7 +83,15 @@ export default class Cutters extends Vue {
   addNewCutter() {
     this.cutters = {
       ...this.cutters,
-      "New Cutter": new Cutter("New Cutter", 10),
+      "New Cutter": new Cutter(
+        "New Cutter",
+        CutterMaterial.carbide,
+        0.25,
+        0.75,
+        3,
+        0.25,
+        1
+      ),
     };
   }
 }

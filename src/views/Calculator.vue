@@ -65,12 +65,13 @@ export default class Calculators extends Vue {
       localStorage.setItem("calculators", JSON.stringify(this.calculators));
     }
 
-    this.defaultMachine = localStorage.getItem("machine") || DefaultMachine;
-    const storedMaterials = localStorage.getItem("materials");
+    this.defaultMachine =
+      JSON.parse(localStorage.getItem("machine")) || DefaultMachine;
+    const storedMaterials = JSON.parse(localStorage.getItem("materials"));
     this.defaultMaterial = storedMaterials
       ? storedMaterials[0]
       : DefaultMaterials[0];
-    const storedCutters = localStorage.getItem("cutters");
+    const storedCutters = JSON.parse(localStorage.getItem("cutters"));
     this.defaultCutter = storedCutters ? storedCutters[0] : DefaultCutters[0];
   }
 
@@ -96,6 +97,7 @@ export default class Calculators extends Vue {
   }
 
   addNewCalculator() {
+    console.log(this.defaultCutter);
     this.calculators = {
       ...this.calculators,
       "New Calculator": new Calculator(
