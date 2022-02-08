@@ -9,10 +9,12 @@
       ></v-text-field>
 
       <v-text-field
-        v-model.number="kFactor"
-        :rules="[requiredRule('K Factor')]"
-        label="K Factor"
+        v-for="numberField of Object.keys(numberFields)"
+        v-model.number="numberFields[numberField].value"
+        :rules="[requiredRule(numberFields[numberField].name)]"
+        :label="numberFields[numberField].name"
         required
+        :key="numberField"
       ></v-text-field>
     </div>
     <v-btn
@@ -46,16 +48,29 @@ export default class CutterForm extends Vue {
   @Prop({ required: true }) updateCutter!: (cutter: Cutter) => void;
   @Prop({ required: true }) deleteCutter!: () => void;
 
-  name = "";
-  kFactor = 10;
+  valid = true;
+  name = "New Cutter";
+
+  numberFields = {
+    diameter: { name: "Diameter", value: 0 },
+    length: { name: "Flute Length", value: 0 },
+    flutes: { name: "Number of Flutes", value: 0 },
+    shankDiameter: { name: "Shank Diameter", value: 0 },
+    overallStickout: {
+      name: "Overall Stickout",
+      value: 0,
+    },
+  };
 
   created() {
     this.name = this.cutter.name;
-    this.kFactor = this.cutter.kFactor;
+    this.machine = this.cutter.machine;
+    this.cutter = this.cutter.cutter;
+    for (const numberField of Object.keys(this.numberFields)) {
+      this.numberFields[numberField].value = this.cutter[numberField];
+    }
   }
 
-  valid = true;
-  name = "";
   requiredRule(name: string) {
     return (v) => !!v || `${name} is required`;
   }
@@ -63,8 +78,21 @@ export default class CutterForm extends Vue {
   validate() {
     //@ts-ignore
     this.$refs.form.validate();
-    this.updateCutter(new Cutter(this.name, this.kFactor));
+    this.updateCutter(
+      new Cutter(
+        this.name,
+        this.machine,
+        this.cutter,
+        this.material,
+        this.numberFields.chipload,
+        this.numberFields.woc,
+        this.numberFields.doc,
+        this.numberFields.rpm,
+        this.numberFields.maxAcceptableDeflection
+      )
+    );
   }
+
   reset() {
     //@ts-ignore
     this.$refs.form.reset();

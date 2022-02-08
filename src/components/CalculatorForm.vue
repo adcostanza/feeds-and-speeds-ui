@@ -41,9 +41,9 @@
 import Component from "vue-class-component";
 import { Prop, Vue } from "vue-property-decorator";
 import { Calculator } from "@/utils/calculator";
-import { DefaultMachine, Machine } from "@/utils/machine";
-import { Cutter, DefaultCutters } from "@/utils/cutter";
-import { DefaultMaterials, Material } from "@/utils/material";
+import { Machine } from "@/utils/machine";
+import { Cutter } from "@/utils/cutter";
+import { Material } from "@/utils/material";
 
 @Component
 export default class CalculatorForm extends Vue {
