@@ -101,7 +101,7 @@ export class Calculator {
 
 export const calculatorsStore = new Store<Calculator[]>("calculators", []);
 
-export const adjustedChiploadMath = (woc: number, cutterDiameter: number) => {
+export const adjustedChipload = (woc: number, cutterDiameter: number) => {
   if (woc > cutterDiameter / 2) {
     return "chipload";
   } else {
@@ -163,3 +163,28 @@ export const maxDeflection = (
 };
 
 export const maxDeflectionPercent = "maxDeflection / maxAcceptableDeflection";
+
+export const allMath = (
+  woc: number,
+  cutterDiameter: number,
+  cutterShankDiameter: number
+) => ({
+  adjustedChipload: adjustedChipload(woc, cutterDiameter),
+  feedrate: feedrate,
+
+  materialRemovalRate: materialRemovalRate,
+
+  powerUsage: powerUsage,
+
+  torque: torque,
+
+  machineForce: machineForce,
+
+  machineForcePercent: machineForcePercent,
+
+  availablePowerPercent: availablePowerPercent,
+
+  routerCutterPowerIncrease: routerCutterPowerIncrease,
+  maxDeflection: maxDeflection(cutterDiameter, cutterShankDiameter),
+  maxDeflectionPercent: maxDeflectionPercent,
+});
