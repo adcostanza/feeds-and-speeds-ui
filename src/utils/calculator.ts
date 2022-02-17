@@ -1,5 +1,5 @@
 import { Machine } from "@/utils/machine";
-import { Cutter } from "@/utils/cutter";
+import { Cutter, getYoungsModulus } from "@/utils/cutter";
 import { Material } from "@/utils/material";
 import { Store } from "@/utils/store";
 
@@ -65,25 +65,25 @@ export class Calculator {
         this.machineForce *
         (Math.pow(this.cutter.length, 3) /
           (3 *
-            this.cutter.youngsModulus *
+            getYoungsModulus(this.cutter.material) *
             ((Math.PI * Math.pow(this.cutter.diameter / 2, 4)) / 4)) +
           Math.pow(this.cutter.overallStickout - this.cutter.length, 3) /
             (3 *
-              this.cutter.youngsModulus *
+              getYoungsModulus(this.cutter.material) *
               ((Math.PI * Math.pow(this.cutter.shankDiameter / 2, 4)) / 4)))
       );
     } else if (this.cutter.diameter == this.cutter.shankDiameter) {
       return (
         (this.machineForce * Math.pow(this.cutter.overallStickout, 3)) /
         (3 *
-          this.cutter.youngsModulus *
+          getYoungsModulus(this.cutter.material) *
           ((Math.PI * Math.pow(this.cutter.diameter / 2, 4)) / 4))
       );
     } else {
       return (
         (this.machineForce * Math.pow(this.cutter.overallStickout, 3)) /
         ((3 *
-          this.cutter.youngsModulus *
+          getYoungsModulus(this.cutter.material) *
           Math.PI *
           Math.pow(this.cutter.shankDiameter / 2, 4)) /
           4)

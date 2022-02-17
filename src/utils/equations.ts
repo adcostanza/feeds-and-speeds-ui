@@ -22,3 +22,5 @@ export const adjusted_chipload_latex = piecewise([
 ]);
 
 // f(x) =
+
+

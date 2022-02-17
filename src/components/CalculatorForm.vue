@@ -90,11 +90,11 @@ export default class CalculatorForm extends Vue {
         this.machine,
         this.cutter,
         this.material,
-        this.numberFields.chipload,
-        this.numberFields.woc,
-        this.numberFields.doc,
-        this.numberFields.rpm,
-        this.numberFields.maxAcceptableDeflection
+        this.numberFields.chipload.value,
+        this.numberFields.woc.value,
+        this.numberFields.doc.value,
+        this.numberFields.rpm.value,
+        this.numberFields.maxAcceptableDeflection.value
       )
     );
   }
