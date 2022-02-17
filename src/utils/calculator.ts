@@ -91,7 +91,7 @@ export class Calculator {
   // }
 
   get maxDeflection(): number {
-    return 1
+    return 1;
   }
 
   get maxDeflectionPercent(): number {
@@ -101,7 +101,37 @@ export class Calculator {
 
 export const calculatorsStore = new Store<Calculator[]>("calculators", []);
 
-export const maxDeflectionMath = (cutterDiameter: number, cutterShankDiameter: number) => {
+export const adjustedChiploadMath = (woc: number, cutterDiameter: number) => {
+  if (woc > cutterDiameter / 2) {
+    return "chipload";
+  } else {
+    return `
+      (cutterDiameter * chipload) /
+      (2.0 * Math.sqrt(cutterDiameter * woc - woc^2))
+    `;
+  }
+};
+
+export const feedrate = "cutterFlutes * rpm * adjustedChipload";
+
+export const materialRemovalRate = "feedrate * doc * woc";
+
+export const powerUsage = "materialRemovalRate / materialKFactor";
+
+export const torque = "(powerUsage * 63024.0) / rpm";
+
+export const machineForce = "torque / (cutterDiameter / 2)";
+
+export const machineForcePercent = "machineForce / maximumMachineForce";
+
+export const availablePowerPercent = "powerUsage / routerOutputPower";
+
+export const routerCutterPowerIncrease = "powerUsage * 745.7";
+
+export const maxDeflection = (
+  cutterDiameter: number,
+  cutterShankDiameter: number
+) => {
   if (cutterDiameter < cutterShankDiameter) {
     return `machineForce *
       ((cutterLength)^3 /
@@ -131,3 +161,5 @@ export const maxDeflectionMath = (cutterDiameter: number, cutterShankDiameter: n
     `;
   }
 };
+
+export const maxDeflectionPercent = "maxDeflection / maxAcceptableDeflection";
