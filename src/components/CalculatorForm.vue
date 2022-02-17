@@ -16,6 +16,25 @@
         required
         :key="numberField"
       ></v-text-field>
+      <v-simple-table>
+        <template v-slot:default>
+          <thead>
+            <tr>
+              <th class="text-left">Calculation</th>
+              <th class="text-left">Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="numberField of Object.keys(computedNumberFields)"
+              :key="numberField"
+            >
+              <td>{{ computedNumberFields[numberField].name }}</td>
+              <td>{{ computedNumberFields[numberField].value }}</td>
+            </tr>
+          </tbody>
+        </template>
+      </v-simple-table>
     </div>
     <v-btn
       :disabled="!valid"
@@ -56,6 +75,19 @@ export default class CalculatorForm extends Vue {
   machine: Machine = null;
   cutter: Cutter = null;
   material: Material = null;
+  get calculatorInstance() {
+    return new Calculator(
+      this.calculator.name,
+      this.calculator.machine,
+      this.calculator.cutter,
+      this.calculator.material,
+      this.calculator.chipload,
+      this.calculator.woc,
+      this.calculator.doc,
+      this.calculator.rpm,
+      this.calculator.maxAcceptableDeflection
+    );
+  }
 
   numberFields = {
     chipload: { name: "Chipload", value: 0 },
@@ -68,7 +100,24 @@ export default class CalculatorForm extends Vue {
     },
   };
 
+  get computedNumberFields() {
+    return {
+      max_deflection: {
+        name: "Max Deflection",
+        value: this.calculatorInstance.maxDeflection,
+      },
+      woc: { name: "Width of Cut", value: 0 },
+      doc: { name: "Depth of Cut", value: 0 },
+      rpm: { name: "RPM", value: 0 },
+      maxAcceptableDeflection: {
+        name: "Maximum Acceptable Deflection %",
+        value: 0,
+      },
+    };
+  }
+
   created() {
+    //@ts-ignore
     this.name = this.calculator.name;
     this.machine = this.calculator.machine;
     this.cutter = this.calculator.cutter;
