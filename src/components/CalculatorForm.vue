@@ -77,15 +77,15 @@ export default class CalculatorForm extends Vue {
   material: Material = null;
   get calculatorInstance() {
     return new Calculator(
-      this.calculator.name,
-      this.calculator.machine,
-      this.calculator.cutter,
-      this.calculator.material,
-      this.calculator.chipload,
-      this.calculator.woc,
-      this.calculator.doc,
-      this.calculator.rpm,
-      this.calculator.maxAcceptableDeflection
+      this.name,
+      this.machine,
+      this.cutter,
+      this.material,
+      this.numberFields.chipload.value,
+      this.numberFields.woc.value,
+      this.numberFields.doc.value,
+      this.numberFields.rpm.value,
+      this.numberFields.maxAcceptableDeflection.value
     );
   }
 
