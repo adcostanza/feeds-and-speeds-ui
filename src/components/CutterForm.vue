@@ -7,6 +7,16 @@
         label="Name"
         required
       ></v-text-field>
+      <v-select
+        v-model="material"
+        :items="materials"
+        item-text="state"
+        item-value="abbr"
+        label="Select"
+        persistent-hint
+        return-object
+        single-line
+      ></v-select>
 
       <v-text-field
         v-for="numberField of Object.keys(numberFields)"
@@ -40,7 +50,7 @@
 <script lang="ts">
 import Component from "vue-class-component";
 import { Prop, Vue } from "vue-property-decorator";
-import { Cutter } from "@/utils/cutter";
+import { Cutter, CutterMaterial } from "@/utils/cutter";
 
 @Component
 export default class CutterForm extends Vue {
@@ -50,6 +60,8 @@ export default class CutterForm extends Vue {
 
   valid = true;
   name = "New Cutter";
+  material = CutterMaterial.carbide
+  materials = Object.values(CutterMaterial)
 
   numberFields = {
     diameter: { name: "Diameter", value: 0 },
@@ -64,8 +76,7 @@ export default class CutterForm extends Vue {
 
   created() {
     this.name = this.cutter.name;
-    this.machine = this.cutter.machine;
-    this.cutter = this.cutter.cutter;
+    this.material = this.cutter.material
     for (const numberField of Object.keys(this.numberFields)) {
       this.numberFields[numberField].value = this.cutter[numberField];
     }
@@ -81,14 +92,12 @@ export default class CutterForm extends Vue {
     this.updateCutter(
       new Cutter(
         this.name,
-        this.machine,
-        this.cutter,
         this.material,
-        this.numberFields.chipload,
-        this.numberFields.woc,
-        this.numberFields.doc,
-        this.numberFields.rpm,
-        this.numberFields.maxAcceptableDeflection
+        this.numberFields.diameter.value,
+        this.numberFields.length.value,
+        this.numberFields.flutes.value,
+        this.numberFields.shankDiameter.value,
+        this.numberFields.overallStickout.value
       )
     );
   }
