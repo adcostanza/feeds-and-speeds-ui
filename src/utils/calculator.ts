@@ -15,88 +15,6 @@ export class Calculator {
     public rpm: number,
     public maxAcceptableDeflection: number
   ) {}
-  // get adjustedChipload(): number {
-  //   if (this.woc > cutterDiameter / 2) {
-  //     return this.chipload;
-  //   } else {
-  //     return (
-  //       (cutterDiameter * this.chipload) /
-  //       (2.0 * Math.sqrt(cutterDiameter * this.woc - pow(this.woc, 2)))
-  //     );
-  //   }
-  // }
-
-  // get feedrate(): number {
-  //   return this.cutter.flutes * this.rpm * this.adjustedChipload;
-  // }
-  //
-  // get materialRemovalRate(): number {
-  //   return this.feedrate * this.doc * this.woc;
-  // }
-  //
-  // get powerUsage(): number {
-  //   return this.materialRemovalRate / this.material.kFactor;
-  // }
-  //
-  // get torque(): number {
-  //   return (this.powerUsage * 63024.0) / this.rpm;
-  // }
-  //
-  // get machineForce(): number {
-  //   return this.torque / (cutterDiameter / 2);
-  // }
-  //
-  // get machineForcePercent(): number {
-  //   return machineForce / this.machine.maximumMachineForce;
-  // }
-  //
-  // get availablePowerPercent(): number {
-  //   return this.powerUsage / this.machine.router.outputPower;
-  // }
-  //
-  // get routerCutterPowerIncrease(): number {
-  //   return this.powerUsage * 745.7;
-  // }
-
-  // get maxDeflection(): number {
-  //   if (cutterDiameter < cutterShankDiameter) {
-  //     return (
-  //       machineForce *
-  //       (pow(cutterLength, 3) /
-  //         (3 *
-  //           cutterYoungsModulus *
-  //           ((pi * pow(cutterDiameter / 2, 4)) / 4)) +
-  //         pow(cutterOverallStickout - cutterLength, 3) /
-  //           (3 *
-  //             cutterYoungsModulus *
-  //             ((pi * pow(cutterShankDiameter / 2, 4)) / 4)))
-  //     );
-  //   } else if (cutterDiameter == cutterShankDiameter) {
-  //     return (
-  //       (machineForce * pow(cutterOverallStickout, 3)) /
-  //       (3 *
-  //         cutterYoungsModulus *
-  //         ((pi * pow(cutterDiameter / 2, 4)) / 4))
-  //     );
-  //   } else {
-  //     return (
-  //       (machineForce * pow(cutterOverallStickout, 3)) /
-  //       ((3 *
-  //         cutterYoungsModulus *
-  //         pi *
-  //         pow(cutterShankDiameter / 2, 4)) /
-  //         4)
-  //     );
-  //   }
-  // }
-
-  get maxDeflection(): number {
-    return 1;
-  }
-
-  get maxDeflectionPercent(): number {
-    return this.maxDeflection / this.maxAcceptableDeflection;
-  }
 }
 
 export const calculatorsStore = new Store<Calculator[]>("calculators", []);
@@ -107,7 +25,7 @@ export const adjustedChipload = (woc: number, cutterDiameter: number) => {
   } else {
     return `
       (cutterDiameter * chipload) /
-      (2.0 * Math.sqrt(cutterDiameter * woc - woc^2))
+      (2.0 * (cutterDiameter * woc - woc^2)^(1/2))
     `;
   }
 };

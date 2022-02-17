@@ -25,20 +25,13 @@
             </tr>
           </thead>
           <tbody>
-            <tr
-              v-for="numberField of Object.keys(computedNumberFields)"
-              :key="numberField"
-            >
-              <td>{{ computedNumberFields[numberField].name }}</td>
-              <td>{{ computedNumberFields[numberField].value }}</td>
+            <tr v-for="key of Object.keys(allMath)" :key="key">
+              <td>{{ key }}</td>
+              <td><div v-katex="asTex(key)" style="font-size: 16pt;padding:4px;"></div></td>
             </tr>
           </tbody>
         </template>
       </v-simple-table>
-    </div>
-
-    <div v-for="key of Object.keys(allMath)" :key="key">
-      <div v-katex="asTex(key)" style="font-size: 2em"></div>
     </div>
     <v-btn
       :disabled="!valid"
@@ -90,7 +83,7 @@ export default class CalculatorForm extends Vue {
   }
 
   asTex(key: string) {
-    return `${key} = ${nerdamer(this.allMath[key]).toTeX()}`;
+    return nerdamer(this.allMath[key]).toTeX();
   }
 
   get calculatorInstance(): Calculator {
