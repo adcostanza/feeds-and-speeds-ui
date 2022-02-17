@@ -21,17 +21,26 @@
           <thead>
             <tr>
               <th class="text-left">Calculation</th>
-              <th class="text-left">Value</th>
+              <th class="text-left">Equation</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="key of Object.keys(allMath)" :key="key">
               <td>{{ key }}</td>
-              <td><div v-katex="asTex(key)" style="font-size: 16pt;padding:4px;"></div></td>
+              <td>
+                <div
+                  v-katex="asTex(key)"
+                  style="font-size: 16pt; padding: 4px"
+                ></div>
+              </td>
             </tr>
           </tbody>
         </template>
       </v-simple-table>
+      <div
+        v-katex="subbed('maxDeflectionPercent')"
+        style="font-size: 16pt; padding: 4px"
+      ></div>
     </div>
     <v-btn
       :disabled="!valid"
@@ -56,7 +65,12 @@
 <script lang="ts">
 import Component from "vue-class-component";
 import { Prop, Vue } from "vue-property-decorator";
-import { allMathStrings, Calculator, maxDeflection } from "@/utils/calculator";
+import {
+  allMathStrings,
+  Calculator,
+  fullySubbed,
+  maxDeflection,
+} from "@/utils/calculator";
 import { Machine } from "@/utils/machine";
 import { Cutter } from "@/utils/cutter";
 import { Material } from "@/utils/material";
@@ -84,6 +98,11 @@ export default class CalculatorForm extends Vue {
 
   asTex(key: string) {
     return nerdamer(this.allMath[key]).toTeX();
+  }
+
+  subbed(key: string) {
+    //@ts-ignore
+    return nerdamer(fullySubbed(key, this.allMath)).toTeX();
   }
 
   get calculatorInstance(): Calculator {
