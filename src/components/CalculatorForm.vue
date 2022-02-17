@@ -36,6 +36,8 @@
         </template>
       </v-simple-table>
     </div>
+    <div v-katex="maxDeflectionEquation" style="font-size: 3em"></div>
+    <div v-katex="maxDeflectionEquationSimplified" style="font-size: 3em"></div>
     <v-btn
       :disabled="!valid"
       color="success"
@@ -59,10 +61,11 @@
 <script lang="ts">
 import Component from "vue-class-component";
 import { Prop, Vue } from "vue-property-decorator";
-import { Calculator } from "@/utils/calculator";
+import { Calculator, maxDeflectionMath } from "@/utils/calculator";
 import { Machine } from "@/utils/machine";
 import { Cutter } from "@/utils/cutter";
 import { Material } from "@/utils/material";
+import nerdamer from "nerdamer";
 
 @Component
 export default class CalculatorForm extends Vue {
@@ -76,6 +79,25 @@ export default class CalculatorForm extends Vue {
   cutter: Cutter = null;
   material: Material = null;
 
+  get maxDeflectionEquation() {
+    console.log(this.cutter);
+    const math = maxDeflectionMath(
+      this.cutter.diameter,
+      this.cutter.shankDiameter
+    )
+
+    return nerdamer.convertToLaTeX(math)
+  }
+
+  get maxDeflectionEquationSimplified() {
+    console.log(this.cutter);
+    const math = maxDeflectionMath(
+      this.cutter.diameter,
+      this.cutter.shankDiameter
+    )
+
+    return nerdamer(math).toTeX()
+  }
   get calculatorInstance(): Calculator {
     if (this.machine && this.cutter && this.material) {
       return new Calculator(
