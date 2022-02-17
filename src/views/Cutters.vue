@@ -74,15 +74,15 @@ export default class Cutters extends Vue {
   addNewCutter() {
     this.cutters = {
       ...this.cutters,
-      "New Cutter": new Cutter(
-        "New Cutter",
-        CutterMaterial.carbide,
-        0.25,
-        0.75,
-        3,
-        0.25,
-        1
-      ),
+      "New Cutter": {
+        name: "New Cutter",
+        material: CutterMaterial.carbide,
+        diameter: 0.25,
+        length: 0.75,
+        flutes: 3,
+        shankDiameter: 0.25,
+        overallStickout: 1,
+      },
     };
   }
 }

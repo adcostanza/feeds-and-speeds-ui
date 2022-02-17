@@ -6,27 +6,41 @@ export enum CutterMaterial {
   cobalt = "cobalt",
 }
 
-export class Cutter {
-  constructor(
-    public name: string,
-    public material: CutterMaterial,
-    public diameter: number,
-    public length: number,
-    public flutes: number,
-    public shankDiameter: number,
-    public overallStickout: number
-  ) {}
-
-  get youngsModulus(): number {
-    if (this.material === CutterMaterial.carbide) {
-      return 87000000.0;
-    } else {
-      return 30000000.0;
-    }
-  }
+export interface Cutter {
+  name: string;
+  material: CutterMaterial;
+  diameter: number;
+  length: number;
+  flutes: number;
+  shankDiameter: number;
+  overallStickout: number;
 }
 
+export const getYoungsModulus = (material: CutterMaterial): number => {
+  if (material === CutterMaterial.carbide) {
+    return 87000000.0;
+  } else {
+    return 30000000.0;
+  }
+};
+
 export const cuttersStore = new Store<Cutter[]>("cutters", [
-  new Cutter("201", CutterMaterial.carbide, 0.25, 0.75, 3, 0.25, 1),
-  new Cutter("205e", CutterMaterial.carbide, 0.25, 1, 2, 0.25, 1.25),
+  {
+    name: "201",
+    material: CutterMaterial.carbide,
+    diameter: 0.25,
+    length: 0.75,
+    flutes: 3,
+    shankDiameter: 0.25,
+    overallStickout: 1,
+  },
+  {
+    name: "205e",
+    material: CutterMaterial.carbide,
+    diameter: 0.25,
+    length: 1,
+    flutes: 2,
+    shankDiameter: 0.25,
+    overallStickout: 1.25,
+  },
 ]);

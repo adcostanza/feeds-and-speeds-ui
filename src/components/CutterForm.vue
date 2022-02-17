@@ -24,7 +24,12 @@
         :rules="[requiredRule(numberFields[numberField].name)]"
         :label="numberFields[numberField].name"
         required
-        :key="numberField"
+        :key="numberFields[numberField].name"
+      ></v-text-field>
+      <v-text-field
+        v-model.number="youngsModulus"
+        :disabled="true"
+        label="Young's Modulus"
       ></v-text-field>
     </div>
     <v-btn
@@ -50,7 +55,7 @@
 <script lang="ts">
 import Component from "vue-class-component";
 import { Prop, Vue } from "vue-property-decorator";
-import { Cutter, CutterMaterial } from "@/utils/cutter";
+import { Cutter, CutterMaterial, getYoungsModulus } from "@/utils/cutter";
 
 @Component
 export default class CutterForm extends Vue {
@@ -60,8 +65,8 @@ export default class CutterForm extends Vue {
 
   valid = true;
   name = "New Cutter";
-  material = CutterMaterial.carbide
-  materials = Object.values(CutterMaterial)
+  material = CutterMaterial.carbide;
+  materials = Object.values(CutterMaterial);
 
   numberFields = {
     diameter: { name: "Diameter", value: 0 },
@@ -74,9 +79,12 @@ export default class CutterForm extends Vue {
     },
   };
 
+  get youngsModulus() {
+    return getYoungsModulus(this.material);
+  }
   created() {
     this.name = this.cutter.name;
-    this.material = this.cutter.material
+    this.material = this.cutter.material;
     for (const numberField of Object.keys(this.numberFields)) {
       this.numberFields[numberField].value = this.cutter[numberField];
     }
@@ -89,17 +97,15 @@ export default class CutterForm extends Vue {
   validate() {
     //@ts-ignore
     this.$refs.form.validate();
-    this.updateCutter(
-      new Cutter(
-        this.name,
-        this.material,
-        this.numberFields.diameter.value,
-        this.numberFields.length.value,
-        this.numberFields.flutes.value,
-        this.numberFields.shankDiameter.value,
-        this.numberFields.overallStickout.value
-      )
-    );
+    this.updateCutter({
+      name: this.name,
+      material: this.material,
+      diameter: this.numberFields.diameter.value,
+      length: this.numberFields.length.value,
+      flutes: this.numberFields.flutes.value,
+      shankDiameter: this.numberFields.shankDiameter.value,
+      overallStickout: this.numberFields.overallStickout.value,
+    });
   }
 
   reset() {
