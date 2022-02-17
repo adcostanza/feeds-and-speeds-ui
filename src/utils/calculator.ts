@@ -105,8 +105,12 @@ export const fullySubbed = (
   key: keyof ReturnType<typeof allMathStrings>,
   allStrings: Record<string, string>
 ): string => {
-  const otherKeys = { ...allStrings };
-  delete otherKeys[key];
+  const otherKeysMap = { ...allStrings };
+  delete otherKeysMap[key];
 
-  return nerdamer(allStrings[key], otherKeys).toString();
+  const otherKeys = Object.keys(otherKeysMap).reverse();
+
+  return otherKeys.slice(1).reduce<string>((acc, ea) => {
+    return nerdamer(acc, { [ea]: otherKeysMap[ea] }).toString();
+  }, nerdamer(allStrings[key], { [otherKeys[0]]: otherKeysMap[otherKeys[0]] }).toString());
 };
