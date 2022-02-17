@@ -164,26 +164,19 @@ export const maxDeflection = (
 
 export const maxDeflectionPercent = "maxDeflection / maxAcceptableDeflection";
 
-export const allMath = (
+export const allMathStrings = (
   woc: number,
   cutterDiameter: number,
   cutterShankDiameter: number
 ) => ({
   adjustedChipload: adjustedChipload(woc, cutterDiameter),
   feedrate: feedrate,
-
   materialRemovalRate: materialRemovalRate,
-
   powerUsage: powerUsage,
-
   torque: torque,
-
   machineForce: machineForce,
-
   machineForcePercent: machineForcePercent,
-
   availablePowerPercent: availablePowerPercent,
-
   routerCutterPowerIncrease: routerCutterPowerIncrease,
   maxDeflection: maxDeflection(cutterDiameter, cutterShankDiameter),
   maxDeflectionPercent: maxDeflectionPercent,
