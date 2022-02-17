@@ -75,18 +75,23 @@ export default class CalculatorForm extends Vue {
   machine: Machine = null;
   cutter: Cutter = null;
   material: Material = null;
-  get calculatorInstance() {
-    return new Calculator(
-      this.name,
-      this.machine,
-      this.cutter,
-      this.material,
-      this.numberFields.chipload.value,
-      this.numberFields.woc.value,
-      this.numberFields.doc.value,
-      this.numberFields.rpm.value,
-      this.numberFields.maxAcceptableDeflection.value
-    );
+
+  get calculatorInstance(): Calculator {
+    if (this.machine && this.cutter && this.material) {
+      return new Calculator(
+        this.name,
+        this.machine,
+        this.cutter,
+        this.material,
+        this.numberFields.chipload.value,
+        this.numberFields.woc.value,
+        this.numberFields.doc.value,
+        this.numberFields.rpm.value,
+        this.numberFields.maxAcceptableDeflection.value
+      );
+    } else {
+      return null;
+    }
   }
 
   numberFields = {
@@ -104,14 +109,7 @@ export default class CalculatorForm extends Vue {
     return {
       max_deflection: {
         name: "Max Deflection",
-        value: this.calculatorInstance.maxDeflection,
-      },
-      woc: { name: "Width of Cut", value: 0 },
-      doc: { name: "Depth of Cut", value: 0 },
-      rpm: { name: "RPM", value: 0 },
-      maxAcceptableDeflection: {
-        name: "Maximum Acceptable Deflection %",
-        value: 0,
+        value: this.calculatorInstance?.maxDeflection || null,
       },
     };
   }
