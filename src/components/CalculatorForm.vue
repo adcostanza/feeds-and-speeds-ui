@@ -13,6 +13,12 @@
         item-text="name"
         label="Cutter"
       ></v-select>
+      <v-select
+        v-model="material"
+        :items="potentialMaterials"
+        item-text="name"
+        label="Material"
+      ></v-select>
       <v-text-field
         v-for="numberField of Object.keys(numberFields)"
         v-model.number="numberFields[numberField].value"
@@ -24,18 +30,18 @@
       <v-simple-table>
         <template v-slot:default>
           <thead>
-          <tr>
-            <th class="text-left">Calculation</th>
-            <th class="text-left">Equation</th>
-          </tr>
+            <tr>
+              <th class="text-left">Calculation</th>
+              <th class="text-left">Equation</th>
+            </tr>
           </thead>
           <tbody>
-          <tr v-for="[key, value] of Object.entries(allValues)" :key="key">
-            <td>{{ key }}</td>
-            <td>
-              {{ value }}
-            </td>
-          </tr>
+            <tr v-for="[key, value] of Object.entries(allValues)" :key="key">
+              <td>{{ key }}</td>
+              <td>
+                {{ value }}
+              </td>
+            </tr>
           </tbody>
         </template>
       </v-simple-table>
@@ -88,12 +94,7 @@
 <script lang="ts">
 import Component from "vue-class-component";
 import { Prop, Vue } from "vue-property-decorator";
-import {
-  allMathStrings,
-  Calculator,
-  fullySubbed,
-  maxDeflection,
-} from "@/utils/calculator";
+import { allMathStrings, Calculator, fullySubbed } from "@/utils/calculator";
 import { Machine } from "@/utils/machine";
 import { Cutter } from "@/utils/cutter";
 import { Material } from "@/utils/material";
@@ -102,8 +103,8 @@ import nerdamer from "nerdamer";
 @Component
 export default class CalculatorForm extends Vue {
   @Prop({ required: true }) calculator!: Calculator;
-  @Prop({required: true}) potentialCutters!: Cutter[]
-  @Prop({required: true}) potentialMaterials!: Material[]
+  @Prop({ required: true }) potentialCutters!: Cutter[];
+  @Prop({ required: true }) potentialMaterials!: Material[];
   @Prop({ required: true }) updateCalculator!: (calculator: Calculator) => void;
   @Prop({ required: true }) deleteCalculator!: () => void;
 
@@ -169,6 +170,7 @@ export default class CalculatorForm extends Vue {
     this.name = this.calculator.name;
     this.machine = this.calculator.machine;
     this.cutter = this.calculator.cutter;
+    this.material = this.calculator.material;
     for (const numberField of Object.keys(this.numberFields)) {
       this.numberFields[numberField].value = this.calculator[numberField];
     }
@@ -181,19 +183,17 @@ export default class CalculatorForm extends Vue {
   validate() {
     //@ts-ignore
     this.$refs.form.validate();
-    this.updateCalculator(
-      new Calculator(
-        this.name,
-        this.machine,
-        this.cutter,
-        this.material,
-        this.numberFields.chipload.value,
-        this.numberFields.woc.value,
-        this.numberFields.doc.value,
-        this.numberFields.rpm.value,
-        this.numberFields.maxAcceptableDeflection.value
-      )
-    );
+    this.updateCalculator({
+      name: this.name,
+      machine: this.machine,
+      cutter: this.cutter,
+      material: this.material,
+      chipload: this.numberFields.chipload.value,
+      woc: this.numberFields.woc.value,
+      doc: this.numberFields.doc.value,
+      rpm: this.numberFields.rpm.value,
+      maxAcceptableDeflection: this.numberFields.maxAcceptableDeflection.value,
+    });
   }
 
   reset() {
