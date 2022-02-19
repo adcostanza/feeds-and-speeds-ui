@@ -40,28 +40,11 @@
             <tr>
               <th class="text-left">Calculation</th>
               <th class="text-left">Equation</th>
+              <th class="text-left">Value</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="[key, value] of Object.entries(allValues)" :key="key">
-              <td>{{ key }}</td>
-              <td>
-                {{ value }}
-              </td>
-            </tr>
-          </tbody>
-        </template>
-      </v-simple-table>
-      <v-simple-table>
-        <template v-slot:default>
-          <thead>
-            <tr>
-              <th class="text-left">Calculation</th>
-              <th class="text-left">Equation</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="key of Object.keys(allMath)" :key="key">
               <td>{{ key }}</td>
               <td>
                 <div
@@ -69,14 +52,17 @@
                   style="font-size: 16pt; padding: 4px"
                 ></div>
               </td>
+              <td>
+                {{ value }}
+              </td>
             </tr>
           </tbody>
         </template>
       </v-simple-table>
-      <div
-        v-katex="subbed('maxDeflectionPercent')"
-        style="font-size: 16pt; padding: 4px"
-      ></div>
+<!--      <div-->
+<!--        v-katex="subbed('maxDeflectionPercent')"-->
+<!--        style="font-size: 16pt; padding: 4px"-->
+<!--      ></div>-->
     </div>
     <v-btn
       :disabled="!valid"
@@ -159,7 +145,6 @@ export default class CalculatorForm extends Vue {
 
     const subbedWithOutputs = Object.entries(subbedWithInputs).reduce(
       (acc, [key, math]) => {
-        console.log(acc);
         return {
           ...acc,
           //@ts-ignore
