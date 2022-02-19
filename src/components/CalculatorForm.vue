@@ -19,16 +19,18 @@
         :items="potentialCutters"
         item-text="name"
         label="Cutter"
+        return-object
       ></v-select>
       <v-select
         v-model="material"
         :items="potentialMaterials"
         item-text="name"
         label="Material"
+        return-object
       ></v-select>
       <v-text-field
         v-for="numberField of Object.keys(numberFields)"
-        v-model.number="numberFields[numberField].value"
+        v-model="numberFields[numberField].value"
         :rules="[requiredRule(numberFields[numberField].name)]"
         :label="numberFields[numberField].name"
         required
@@ -92,8 +94,9 @@ import { getOutputPower, Machine } from "@/utils/machine";
 import { Cutter, getYoungsModulus } from "@/utils/cutter";
 import { Material } from "@/utils/material";
 import nerdamer from "nerdamer";
+import { decimalNumber } from "@/utils/directives";
 
-@Component
+@Component({ directives: { decimalNumber } })
 export default class CalculatorForm extends Vue {
   @Prop({ required: true }) calculator!: Calculator;
   @Prop({ required: true }) potentialCutters!: Cutter[];
@@ -109,10 +112,10 @@ export default class CalculatorForm extends Vue {
   allMath = {};
   allValues = {};
 
-  @Watch('machine',{deep:true})
-  @Watch('cutter',{deep:true})
-  @Watch('material',{deep:true})
-  @Watch('numberFields',{deep:true})
+  @Watch("machine", { deep: true })
+  @Watch("cutter", { deep: true })
+  @Watch("material", { deep: true })
+  @Watch("numberFields", { deep: true })
   update() {
     this.allMath = allMathStrings(
       this.numberFields.woc.value,
