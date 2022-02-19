@@ -74,7 +74,7 @@ export default class Materials extends Vue {
   addNewMaterial() {
     this.materials = {
       ...this.materials,
-      "New Material": new Material("New Material", 10),
+      "New Material": { name: "New Material", kFactor: 10 },
     };
   }
 }

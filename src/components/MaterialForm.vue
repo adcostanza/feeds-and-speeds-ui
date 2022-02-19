@@ -63,7 +63,7 @@ export default class MaterialForm extends Vue {
   validate() {
     //@ts-ignore
     this.$refs.form.validate();
-    this.updateMaterial(new Material(this.name, this.kFactor));
+    this.updateMaterial({ name: this.name, kFactor: this.kFactor });
   }
   reset() {
     //@ts-ignore

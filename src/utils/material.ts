@@ -1,9 +1,10 @@
 import { Store } from "@/utils/store";
 
-export class Material {
-  constructor(public name: string, public kFactor: number) {}
+export interface Material {
+  name: string;
+  kFactor: number;
 }
 
 export const materialsStore = new Store<Material[]>("materials", [
-  new Material("Soft Whitewood", 10),
+  { name: "Soft Whitewood", kFactor: 10 },
 ]);

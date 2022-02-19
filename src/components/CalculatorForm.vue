@@ -122,6 +122,8 @@ export default class CalculatorForm extends Vue {
       rpm: this.numberFields.rpm.value.toString(),
       maxAcceptableDeflection:
         this.numberFields.maxAcceptableDeflection.value.toString(),
+      cutterDiameter: this.cutter.diameter,
+      materialKFactor: this.material.kFactor,
     };
     const subbed = Object.entries(this.allMath).reduce((acc, [key, math]) => {
       return {
