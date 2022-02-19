@@ -30,10 +30,16 @@ const routes: Array<RouteConfig> = [
       import(/* webpackChunkName: "calculator" */ "../views/Calculator.vue"),
   },
   {
+    path: "/optimization",
+    name: "Optimization",
+    component: () =>
+      import(/* webpackChunkName: "optimization" */ "../views/Optimization.vue"),
+  },
+  {
     path: "/settings",
     name: "Settings",
     component: () =>
-      import(/* webpackChunkName: "calculator" */ "../views/Settings.vue"),
+      import(/* webpackChunkName: "settings" */ "../views/Settings.vue"),
   },
 ];
 

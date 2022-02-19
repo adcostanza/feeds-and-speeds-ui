@@ -52,6 +52,7 @@ export default class extends Vue {
     { text: "Materials", icon: "mdi-cube", to: "/materials" },
     { text: "Cutters", icon: "mdi-saw-blade", to: "/cutters" },
     { text: "Calculator", icon: "mdi-calculator", to: "/calculator" },
+    { text: "Optimization", icon: "mdi-repeat-variant", to: "/optimization" },
     { text: "Settings", icon: "mdi-cog", to: "/settings" },
   ];
   selectedItem = "";

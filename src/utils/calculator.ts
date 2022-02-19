@@ -1,5 +1,5 @@
 import { Machine } from "@/utils/machine";
-import { Cutter, getYoungsModulus } from "@/utils/cutter";
+import { Cutter } from "@/utils/cutter";
 import { Material } from "@/utils/material";
 import { Store } from "@/utils/store";
 import nerdamer from "nerdamer";
