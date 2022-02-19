@@ -163,7 +163,7 @@ export default class CalculatorForm extends Vue {
         return {
           ...acc,
           //@ts-ignore
-          [key]: nerdamer(math, acc).evaluate(),
+          [key]: Number(nerdamer(math, acc).evaluate()),
         };
       },
       {}
