@@ -95,12 +95,10 @@
 
 <script lang="ts">
 import Component from "vue-class-component";
-import { Prop, Vue, Watch } from "vue-property-decorator";
-import { allMathStrings, fullySubbed } from "@/utils/calculator";
-import { getOutputPower, Machine } from "@/utils/machine";
-import { Cutter, getYoungsModulus } from "@/utils/cutter";
+import { Prop, Vue } from "vue-property-decorator";
+import { Machine } from "@/utils/machine";
+import { Cutter } from "@/utils/cutter";
 import { Material } from "@/utils/material";
-import nerdamer from "nerdamer";
 import { decimalNumber } from "@/utils/directives";
 import { Optimization } from "@/utils/optimization";
 
@@ -147,7 +145,13 @@ export default class OptimizationForm extends Vue {
   }
 
   requiredRule(name: string) {
-    return (v) => !!v || `${name} is required`;
+    return (v) => {
+      if (v === "") {
+        return `${name} is required`;
+      } else if (isNaN(v) || isNaN(parseFloat(v))) {
+        return `${name} must be a number`;
+      }
+    };
   }
 
   validate() {
