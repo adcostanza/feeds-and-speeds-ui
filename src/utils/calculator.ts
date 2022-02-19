@@ -4,18 +4,16 @@ import { Material } from "@/utils/material";
 import { Store } from "@/utils/store";
 import nerdamer from "nerdamer";
 
-export class Calculator {
-  constructor(
-    public name: string,
-    public machine: Machine,
-    public cutter: Cutter,
-    public material: Material,
-    public chipload: number,
-    public woc: number,
-    public doc: number,
-    public rpm: number,
-    public maxAcceptableDeflection: number
-  ) {}
+export interface Calculator {
+  name: string;
+  machine: Machine;
+  cutter: Cutter;
+  material: Material;
+  chipload: number;
+  woc: number;
+  doc: number;
+  rpm: number;
+  maxAcceptableDeflection: number;
 }
 
 export const calculatorsStore = new Store<Calculator[]>("calculators", []);

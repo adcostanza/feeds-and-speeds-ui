@@ -18,6 +18,8 @@
               :calculator="calculator"
               :update-calculator="updateCalculator(calculator.name)"
               :delete-calculator="deleteCalculator(calculator.name)"
+              :potential-cutters="potentialCutters"
+              :potential-materials="potentialMaterials"
             />
           </v-expansion-panel-content>
         </v-expansion-panel>
@@ -54,8 +56,16 @@ export default class Calculators extends Vue {
   );
 
   defaultMachine: Machine = machineStore.get();
-  defaultMaterial: Material = materialsStore.get()[0];
-  defaultCutter: Cutter = cuttersStore.get()[0];
+  potentialMaterials: Material[] = materialsStore.get();
+  potentialCutters: Cutter[] = cuttersStore.get();
+
+  get defaultMaterial() {
+    return this.potentialMaterials[0];
+  }
+
+  get defaultCutter() {
+    return this.potentialCutters[0];
+  }
 
   updateCalculator(name: string): (calculator: Calculator) => void {
     return (calculator: Calculator) => {
@@ -79,20 +89,19 @@ export default class Calculators extends Vue {
   }
 
   addNewCalculator() {
-    console.log(this.defaultCutter);
     this.calculators = {
       ...this.calculators,
-      "New Calculator": new Calculator(
-        "New Calculator",
-        this.defaultMachine,
-        this.defaultCutter,
-        this.defaultMaterial,
-        0.002,
-        this.defaultCutter.diameter * 0.5,
-        this.defaultCutter.diameter * 2,
-        18000,
-        0.001
-      ),
+      "New Calculator": {
+        name: "New Calculator",
+        machine: this.defaultMachine,
+        cutter: this.defaultCutter,
+        material: this.defaultMaterial,
+        chipload: 0.002,
+        woc: this.defaultCutter.diameter * 0.5,
+        doc: this.defaultCutter.diameter * 2,
+        rpm: 18000,
+        maxAcceptableDeflection: 0.001,
+      },
     };
   }
 }

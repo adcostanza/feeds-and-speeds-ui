@@ -7,7 +7,12 @@
         label="Name"
         required
       ></v-text-field>
-
+      <v-select
+        v-model="cutter"
+        :items="potentialCutters"
+        item-text="name"
+        label="Cutter"
+      ></v-select>
       <v-text-field
         v-for="numberField of Object.keys(numberFields)"
         v-model.number="numberFields[numberField].value"
@@ -97,6 +102,8 @@ import nerdamer from "nerdamer";
 @Component
 export default class CalculatorForm extends Vue {
   @Prop({ required: true }) calculator!: Calculator;
+  @Prop({required: true}) potentialCutters!: Cutter[]
+  @Prop({required: true}) potentialMaterials!: Material[]
   @Prop({ required: true }) updateCalculator!: (calculator: Calculator) => void;
   @Prop({ required: true }) deleteCalculator!: () => void;
 
@@ -128,6 +135,7 @@ export default class CalculatorForm extends Vue {
     const subbed = Object.entries(this.allMath).reduce((acc, [key, math]) => {
       return {
         ...acc,
+        //@ts-ignore
         [key]: nerdamer(math, subs).evaluate(),
       };
     }, {});
@@ -145,24 +153,6 @@ export default class CalculatorForm extends Vue {
     return nerdamer(fullySubbed(key, this.allMath)).toTeX();
   }
 
-  get calculatorInstance(): Calculator {
-    if (this.machine && this.cutter && this.material) {
-      return new Calculator(
-        this.name,
-        this.machine,
-        this.cutter,
-        this.material,
-        this.numberFields.chipload.value,
-        this.numberFields.woc.value,
-        this.numberFields.doc.value,
-        this.numberFields.rpm.value,
-        this.numberFields.maxAcceptableDeflection.value
-      );
-    } else {
-      return null;
-    }
-  }
-
   numberFields = {
     chipload: { name: "Chipload", value: 0 },
     woc: { name: "Width of Cut", value: 0 },
@@ -173,15 +163,6 @@ export default class CalculatorForm extends Vue {
       value: 0,
     },
   };
-
-  get computedNumberFields() {
-    return {
-      max_deflection: {
-        name: "Max Deflection",
-        value: this.calculatorInstance?.maxDeflection || null,
-      },
-    };
-  }
 
   created() {
     //@ts-ignore
