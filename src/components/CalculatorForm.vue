@@ -123,7 +123,7 @@ export default class CalculatorForm extends Vue {
   }
 
   get allValues() {
-    const subs = {
+    const subsFromInputs = {
       chipload: this.numberFields.chipload.value.toString(),
       woc: this.numberFields.woc.value.toString(),
       doc: this.numberFields.doc.value.toString(),
@@ -133,16 +133,31 @@ export default class CalculatorForm extends Vue {
       cutterDiameter: this.cutter.diameter,
       materialKFactor: this.material.kFactor,
     };
-    const subbed = Object.entries(this.allMath).reduce((acc, [key, math]) => {
-      return {
-        ...acc,
-        //@ts-ignore
-        [key]: nerdamer(math, subs).evaluate(),
-      };
-    }, {});
 
-    console.log(subbed);
-    return subbed;
+    const subbedWithInputs = Object.entries(this.allMath).reduce(
+      (acc, [key, math]) => {
+        return {
+          ...acc,
+          //@ts-ignore
+          [key]: nerdamer(math, subsFromInputs).evaluate(),
+        };
+      },
+      {}
+    );
+
+    const subbedWithOutputs = Object.entries(subbedWithInputs).reduce(
+      (acc, [key, math]) => {
+        console.log(acc)
+        return {
+          ...acc,
+          //@ts-ignore
+          [key]: nerdamer(math, acc).evaluate(),
+        };
+      },
+      {}
+    );
+
+    return subbedWithOutputs;
   }
 
   asTex(key: string) {
