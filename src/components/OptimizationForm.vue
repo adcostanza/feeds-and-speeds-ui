@@ -150,6 +150,8 @@ export default class OptimizationForm extends Vue {
         return `${name} is required`;
       } else if (isNaN(v) || isNaN(parseFloat(v))) {
         return `${name} must be a number`;
+      } else if (v < 0) {
+        return `${name} must be positive`;
       }
     };
   }
