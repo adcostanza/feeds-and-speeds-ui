@@ -112,6 +112,26 @@ export default class CalculatorForm extends Vue {
   allMath = {};
   allValues = {};
 
+  formatOutputNumber(name: string, number: number): number {
+    if (name.toLowerCase().endsWith("percent")) {
+      return `${(number * 100).toFixed(2)}%`;
+    } else {
+      let fixedDigits = 2;
+      if (number > 0.1 && number < 100) {
+        fixedDigits = 2;
+      } else if (number > 100) {
+        fixedDigits = 1;
+      } else if (number < 0.01) {
+        fixedDigits = 4;
+      } else if (number < 0.001) {
+        fixedDigits = 4;
+      } else {
+        fixedDigits = 6;
+      }
+      return number.toFixed(fixedDigits);
+    }
+  }
+
   @Watch("machine", { deep: true })
   @Watch("cutter", { deep: true })
   @Watch("material", { deep: true })
@@ -161,7 +181,12 @@ export default class CalculatorForm extends Vue {
       {}
     );
 
-    this.allValues = subbedWithOutputs;
+    this.allValues = Object.entries(subbedWithOutputs).reduce(
+      (acc, [key, value]) => {
+        return { ...acc, [key]: this.formatOutputNumber(key, value) };
+      },
+      {}
+    );
   }
 
   asTex(key: string) {
