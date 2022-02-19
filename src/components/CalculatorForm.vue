@@ -59,10 +59,10 @@
           </tbody>
         </template>
       </v-simple-table>
-<!--      <div-->
-<!--        v-katex="subbed('maxDeflectionPercent')"-->
-<!--        style="font-size: 16pt; padding: 4px"-->
-<!--      ></div>-->
+      <!--      <div-->
+      <!--        v-katex="subbed('maxDeflectionPercent')"-->
+      <!--        style="font-size: 16pt; padding: 4px"-->
+      <!--      ></div>-->
     </div>
     <v-btn
       :disabled="!valid"
@@ -86,7 +86,7 @@
 
 <script lang="ts">
 import Component from "vue-class-component";
-import { Prop, Vue } from "vue-property-decorator";
+import { Prop, Vue, Watch } from "vue-property-decorator";
 import { allMathStrings, Calculator, fullySubbed } from "@/utils/calculator";
 import { getOutputPower, Machine } from "@/utils/machine";
 import { Cutter, getYoungsModulus } from "@/utils/cutter";
@@ -106,16 +106,20 @@ export default class CalculatorForm extends Vue {
   machine: Machine = null;
   cutter: Cutter = null;
   material: Material = null;
+  allMath = {};
+  allValues = {};
 
-  get allMath() {
-    return allMathStrings(
+  @Watch('machine',{deep:true})
+  @Watch('cutter',{deep:true})
+  @Watch('material',{deep:true})
+  @Watch('numberFields',{deep:true})
+  update() {
+    this.allMath = allMathStrings(
       this.numberFields.woc.value,
       this.cutter.diameter,
       this.cutter.shankDiameter
     );
-  }
 
-  get allValues() {
     const subsFromInputs = {
       chipload: this.numberFields.chipload.value.toString(),
       woc: this.numberFields.woc.value.toString(),
@@ -154,7 +158,7 @@ export default class CalculatorForm extends Vue {
       {}
     );
 
-    return subbedWithOutputs;
+    this.allValues = subbedWithOutputs;
   }
 
   asTex(key: string) {
