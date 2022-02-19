@@ -36,19 +36,25 @@
         required
         :key="numberField"
       ></v-text-field>
+      <v-switch
+        v-model="showEquations"
+        label="Show Equations"
+        color="success"
+        hide-details
+      ></v-switch>
       <v-simple-table>
         <template v-slot:default>
           <thead>
             <tr>
               <th class="text-left">Calculation</th>
-              <th class="text-left">Equation</th>
+              <th v-if="showEquations" class="text-left">Equation</th>
               <th class="text-left">Value</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="[key, value] of Object.entries(allValues)" :key="key">
               <td>{{ key }}</td>
-              <td>
+              <td v-if="showEquations">
                 <div
                   v-katex="asTex(key)"
                   style="font-size: 16pt; padding: 4px"
@@ -112,11 +118,13 @@ export default class CalculatorForm extends Vue {
   allMath = {};
   allValues = {};
 
+  showEquations = true
+
   formatOutputNumber(name: string, number: number): number {
     if (name.toLowerCase().endsWith("percent")) {
       return `${(number * 100).toFixed(2)}%`;
     } else {
-      let fixedDigits = 2;
+      let fixedDigits
       if (number > 0.1 && number < 100) {
         fixedDigits = 2;
       } else if (number > 100) {
