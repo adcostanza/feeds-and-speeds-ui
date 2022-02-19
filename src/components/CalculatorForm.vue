@@ -1,47 +1,69 @@
 <template>
-  <v-form ref="form" v-model="valid" lazy-validation>
-    <div style="padding: 20px; padding-top: 0px">
-      <v-text-field
-        v-model="name"
-        :rules="[requiredRule('Name')]"
-        label="Name"
-        required
-      ></v-text-field>
-      <v-select
-        v-model="machine"
-        :items="[machine]"
-        item-text="name"
-        label="Machine"
-        :disabled="true"
-      ></v-select>
-      <v-select
-        v-model="cutter"
-        :items="potentialCutters"
-        item-text="name"
-        label="Cutter"
-        return-object
-      ></v-select>
-      <v-select
-        v-model="material"
-        :items="potentialMaterials"
-        item-text="name"
-        label="Material"
-        return-object
-      ></v-select>
-      <v-text-field
-        v-for="numberField of Object.keys(numberFields)"
-        v-model="numberFields[numberField].value"
-        :rules="[requiredRule(numberFields[numberField].name)]"
-        :label="numberFields[numberField].name"
-        required
-        :key="numberField"
-      ></v-text-field>
-      <v-switch
-        v-model="showEquations"
-        label="Show Equations"
-        color="success"
-        hide-details
-      ></v-switch>
+  <div>
+    <v-row>
+    <v-col cols="4">
+      <v-form ref="form" v-model="valid" lazy-validation>
+          <v-text-field
+            v-model="name"
+            :rules="[requiredRule('Name')]"
+            label="Name"
+            required
+          ></v-text-field>
+          <v-select
+            v-model="machine"
+            :items="[machine]"
+            item-text="name"
+            label="Machine"
+            :disabled="true"
+          ></v-select>
+          <v-select
+            v-model="cutter"
+            :items="potentialCutters"
+            item-text="name"
+            label="Cutter"
+            return-object
+          ></v-select>
+          <v-select
+            v-model="material"
+            :items="potentialMaterials"
+            item-text="name"
+            label="Material"
+            return-object
+          ></v-select>
+          <v-text-field
+            v-for="numberField of Object.keys(numberFields)"
+            v-model="numberFields[numberField].value"
+            :rules="[requiredRule(numberFields[numberField].name)]"
+            :label="numberFields[numberField].name"
+            required
+            :key="numberField"
+          ></v-text-field>
+          <v-switch
+            v-model="showEquations"
+            label="Show Equations"
+            color="success"
+            hide-details
+          ></v-switch>
+        <v-btn
+          :disabled="!valid"
+          color="success"
+          class="mr-4"
+          @click="validate"
+          style="margin: 18px"
+        >
+          Submit
+        </v-btn>
+        <v-btn
+          color="error"
+          class="mr-4"
+          @click="deleteCalculator"
+          style="margin: 18px"
+        >
+          <v-icon>mdi-delete</v-icon>Delete
+        </v-btn>
+      </v-form>
+    </v-col>
+    <v-col cols="8">
       <v-simple-table>
         <template v-slot:default>
           <thead>
@@ -71,25 +93,9 @@
       <!--        v-katex="subbed('maxDeflectionPercent')"-->
       <!--        style="font-size: 16pt; padding: 4px"-->
       <!--      ></div>-->
-    </div>
-    <v-btn
-      :disabled="!valid"
-      color="success"
-      class="mr-4"
-      @click="validate"
-      style="margin: 18px"
-    >
-      Submit
-    </v-btn>
-    <v-btn
-      color="error"
-      class="mr-4"
-      @click="deleteCalculator"
-      style="margin: 18px"
-    >
-      <v-icon>mdi-delete</v-icon>Delete
-    </v-btn>
-  </v-form>
+    </v-col>
+    </v-row>
+  </div>
 </template>
 
 <script lang="ts">
@@ -118,13 +124,13 @@ export default class CalculatorForm extends Vue {
   allMath = {};
   allValues = {};
 
-  showEquations = true
+  showEquations = true;
 
   formatOutputNumber(name: string, number: number): number {
     if (name.toLowerCase().endsWith("percent")) {
       return `${(number * 100).toFixed(2)}%`;
     } else {
-      let fixedDigits
+      let fixedDigits;
       if (number > 0.1 && number < 100) {
         fixedDigits = 2;
       } else if (number > 100) {
