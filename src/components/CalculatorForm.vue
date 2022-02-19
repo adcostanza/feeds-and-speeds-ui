@@ -8,6 +8,13 @@
         required
       ></v-text-field>
       <v-select
+        v-model="machine"
+        :items="[machine]"
+        item-text="name"
+        label="Machine"
+        :disabled="true"
+      ></v-select>
+      <v-select
         v-model="cutter"
         :items="potentialCutters"
         item-text="name"
@@ -95,8 +102,8 @@
 import Component from "vue-class-component";
 import { Prop, Vue } from "vue-property-decorator";
 import { allMathStrings, Calculator, fullySubbed } from "@/utils/calculator";
-import { Machine } from "@/utils/machine";
-import { Cutter } from "@/utils/cutter";
+import { getOutputPower, Machine } from "@/utils/machine";
+import { Cutter, getYoungsModulus } from "@/utils/cutter";
 import { Material } from "@/utils/material";
 import nerdamer from "nerdamer";
 
@@ -132,6 +139,11 @@ export default class CalculatorForm extends Vue {
         this.numberFields.maxAcceptableDeflection.value.toString(),
       cutterDiameter: this.cutter.diameter,
       materialKFactor: this.material.kFactor,
+      cutterFlutes: this.cutter.flutes,
+      maximumMachineForce: this.machine.maximumMachineForce,
+      routerOutputPower: getOutputPower(this.machine.router),
+      cutterOverallStickout: this.cutter.overallStickout,
+      cutterYoungsModulus: getYoungsModulus(this.cutter.material),
     };
 
     const subbedWithInputs = Object.entries(this.allMath).reduce(
@@ -147,7 +159,7 @@ export default class CalculatorForm extends Vue {
 
     const subbedWithOutputs = Object.entries(subbedWithInputs).reduce(
       (acc, [key, math]) => {
-        console.log(acc)
+        console.log(acc);
         return {
           ...acc,
           //@ts-ignore

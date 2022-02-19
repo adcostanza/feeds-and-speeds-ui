@@ -7,15 +7,15 @@ export class Router {
     public efficiency: number,
     public ratedSpeed: number
   ) {}
-
-  get inputPower(): number {
-    return this.inputVoltage * this.inputCurrent;
-  }
-
-  get outputPower(): number {
-    return (this.inputPower * this.efficiency) / 745.7;
-  }
 }
+
+export const getInputPower = (router: Router) => {
+  return router.inputVoltage * router.inputCurrent;
+};
+
+export const getOutputPower = (router: Router) => {
+  return (getInputPower(router) * router.efficiency) / 745.7;
+};
 
 export class Machine {
   constructor(
