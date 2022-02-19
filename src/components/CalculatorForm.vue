@@ -19,6 +19,24 @@
       <v-simple-table>
         <template v-slot:default>
           <thead>
+          <tr>
+            <th class="text-left">Calculation</th>
+            <th class="text-left">Equation</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-for="[key, value] of Object.entries(allValues)" :key="key">
+            <td>{{ key }}</td>
+            <td>
+              {{ value }}
+            </td>
+          </tr>
+          </tbody>
+        </template>
+      </v-simple-table>
+      <v-simple-table>
+        <template v-slot:default>
+          <thead>
             <tr>
               <th class="text-left">Calculation</th>
               <th class="text-left">Equation</th>
@@ -94,6 +112,26 @@ export default class CalculatorForm extends Vue {
       this.cutter.diameter,
       this.cutter.shankDiameter
     );
+  }
+
+  get allValues() {
+    const subs = {
+      chipload: this.numberFields.chipload.value.toString(),
+      woc: this.numberFields.woc.value.toString(),
+      doc: this.numberFields.doc.value.toString(),
+      rpm: this.numberFields.rpm.value.toString(),
+      maxAcceptableDeflection:
+        this.numberFields.maxAcceptableDeflection.value.toString(),
+    };
+    const subbed = Object.entries(this.allMath).reduce((acc, [key, math]) => {
+      return {
+        ...acc,
+        [key]: nerdamer(math, subs).evaluate(),
+      };
+    }, {});
+
+    console.log(subbed);
+    return subbed;
   }
 
   asTex(key: string) {
