@@ -68,6 +68,14 @@
             v-model="constraints"
             hint="Separated by newline"
           ></v-textarea>
+          <v-chip
+            color="primary"
+            v-for="constraint of constraints.split('\n')"
+            :key="constraint"
+            class="ma-2"
+          >
+            {{ constraint }}
+          </v-chip>
           <v-text-field
             v-for="[key, field] of Object.entries(numberFields)"
             v-model="field.value"
