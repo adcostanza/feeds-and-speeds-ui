@@ -162,8 +162,8 @@ export default class OptimizationForm extends Vue {
     }
     for (const minMaxField of Object.keys(this.minMaxFields)) {
       this.minMaxFields[minMaxField].min = this.optimization[minMaxField].min;
-      this.minMaxFields[minMaxField].min = this.optimization[minMaxField].max;
-      this.minMaxFields[minMaxField].min = this.optimization[minMaxField].count;
+      this.minMaxFields[minMaxField].max = this.optimization[minMaxField].max;
+      this.minMaxFields[minMaxField].count = this.optimization[minMaxField].count;
     }
   }
 
