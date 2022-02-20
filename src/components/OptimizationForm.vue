@@ -5,7 +5,7 @@
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-text-field
             v-model="name"
-            :rules="[requiredRule('Name')]"
+            :rules="[(v) => !!v || 'Name is required']"
             label="Name"
             required
           ></v-text-field>
@@ -56,6 +56,18 @@
               ></v-text-field
             ></v-col>
           </v-row>
+          <v-switch
+            v-model="maximizeMMR"
+            label="Maximize MMR"
+            color="success"
+            :disabled="true"
+          ></v-switch>
+          <v-textarea
+            name="input-7-1"
+            label="Constraints"
+            v-model="constraints"
+            hint="Separated by newline"
+          ></v-textarea>
           <v-text-field
             v-for="[key, field] of Object.entries(numberFields)"
             v-model="field.value"
@@ -64,12 +76,7 @@
             required
             :key="key"
           ></v-text-field>
-          <v-switch
-            v-model="showEquations"
-            label="Show Equations"
-            color="success"
-            hide-details
-          ></v-switch>
+
           <v-btn
             :disabled="!valid"
             color="success"
@@ -119,9 +126,11 @@ export default class OptimizationForm extends Vue {
   material: Material = null;
   allMath = {};
   allValues = {};
+  maximizeMMR = true;
+  constraints = "";
 
   minMaxFields = {
-    chipload: { name: "Chipload", min: 0, max: 0, count: 1 },
+    chipload: { name: "Chipload", min: 0.001, max: 0.001, count: 1 },
     woc: { name: "Width of Cut", min: 0, max: 0, count: 1 },
     doc: { name: "Depth of Cut", min: 0, max: 0, count: 1 },
   };
@@ -139,8 +148,14 @@ export default class OptimizationForm extends Vue {
     this.machine = this.optimization.machine;
     this.cutter = this.optimization.cutter;
     this.material = this.optimization.material;
+    this.constraints = this.optimization.constraints.join("\n");
     for (const numberField of Object.keys(this.numberFields)) {
       this.numberFields[numberField].value = this.optimization[numberField];
+    }
+    for (const minMaxField of Object.keys(this.minMaxFields)) {
+      this.minMaxFields[minMaxField].min = this.optimization[minMaxField].min;
+      this.minMaxFields[minMaxField].min = this.optimization[minMaxField].max;
+      this.minMaxFields[minMaxField].min = this.optimization[minMaxField].count;
     }
   }
 
@@ -164,9 +179,10 @@ export default class OptimizationForm extends Vue {
       machine: this.machine,
       cutter: this.cutter,
       material: this.material,
-      chipload: this.numberFields.chipload.value,
-      woc: this.numberFields.woc.value,
-      doc: this.numberFields.doc.value,
+      chipload: { ...this.minMaxFields.chipload },
+      woc: { ...this.minMaxFields.woc },
+      doc: { ...this.minMaxFields.doc },
+      constraints: this.constraints.split("\n"),
       rpm: this.numberFields.rpm.value,
       maxAcceptableDeflection: this.numberFields.maxAcceptableDeflection.value,
     });

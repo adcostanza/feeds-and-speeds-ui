@@ -23,7 +23,7 @@ import { Component, Vue } from "vue-property-decorator";
 
 @Component
 export default class Settings extends Vue {
-  keys = ["machine", "cutters", "materials", "calculators"];
+  keys = ["machine", "cutters", "materials", "calculators", "optimizations"];
   download() {
     const data = this.keys.reduce(
       (acc, key) => ({ ...acc, [key]: localStorage.getItem(key) }),

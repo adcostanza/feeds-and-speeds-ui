@@ -72,7 +72,10 @@ export default class Optimizations extends Vue {
       if (optimization.name !== name) {
         delete this.optimizations[name];
       }
-      this.optimizations = { ...this.optimizations, [optimization.name]: optimization };
+      this.optimizations = {
+        ...this.optimizations,
+        [optimization.name]: optimization,
+      };
     };
   }
 
@@ -96,9 +99,23 @@ export default class Optimizations extends Vue {
         machine: this.defaultMachine,
         cutter: this.defaultCutter,
         material: this.defaultMaterial,
-        chipload: 0.002,
-        woc: this.defaultCutter.diameter * 0.5,
-        doc: this.defaultCutter.diameter * 2,
+        chipload: { min: 0.001, max: 0.005, count: 5 },
+        woc: {
+          min: this.defaultCutter.diameter * 0.01,
+          max: this.defaultCutter.diameter * 1,
+          count: 100,
+        },
+        doc: {
+          min: this.defaultCutter.diameter * 0.01,
+          max: this.defaultCutter.diameter * 2,
+          count: 100,
+        },
+        constraints: [
+          "machineForcePercent < 0.25",
+          "availablePowerPercent < 0.25",
+          "maxDeflectionPercent < 0.1",
+          "feedrate < 180",
+        ],
         rpm: 18000,
         maxAcceptableDeflection: 0.001,
       },

@@ -10,10 +10,14 @@ export interface Optimization {
   material: Material;
   maxAcceptableDeflection: number;
 
-  chipload: number;
-  woc: number;
-  doc: number;
+  chipload: { min: number; max: number; count: number };
+  woc: { min: number; max: number; count: number };
+  doc: { min: number; max: number; count: number };
+  constraints: string[];
   rpm: number;
 }
 
-export const optimizationsStore = new Store<Optimization[]>("optimizations", []);
+export const optimizationsStore = new Store<Optimization[]>(
+  "optimizations",
+  []
+);
