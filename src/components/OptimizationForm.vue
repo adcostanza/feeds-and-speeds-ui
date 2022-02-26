@@ -110,7 +110,6 @@
         <template v-slot:default>
           <thead>
             <tr>
-              <th class="text-left">#</th>
               <th
                 v-for="key of Object.keys(optimization.results[0])"
                 :key="key"
@@ -122,7 +121,6 @@
           </thead>
           <tbody>
             <tr v-for="[i, result] of optimization.results.entries()" :key="i">
-              <td>{{ i }}</td>
               <td
                 v-for="[key, resultValue] of Object.entries(result)"
                 :key="key"

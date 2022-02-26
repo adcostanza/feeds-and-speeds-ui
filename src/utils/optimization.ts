@@ -60,6 +60,7 @@ export const executeOptimization = ({
     return new Constraint(ea);
   });
 
+  let count = 1;
   const values = _.flatMap(docs, (doc) => {
     return _.flatMap(wocs, (woc) => {
       return chiploads.map((chipload) => {
@@ -86,9 +87,20 @@ export const executeOptimization = ({
             break;
           }
         }
-        return { ...result, constraintFulfilled };
+
+        const resultWithMetadata = { ...result, constraintFulfilled, count };
+        count++;
+        return resultWithMetadata;
       });
     });
+  }).sort((a, b) => {
+    if (a.constraintFulfilled && b.constraintFulfilled) {
+      return b.materialRemovalRate - a.materialRemovalRate;
+    } else if (a.constraintFulfilled && !b.constraintFulfilled) {
+      return -1;
+    } else if (b.constraintFulfilled && b.constraintFulfilled) {
+      return 1;
+    }
   });
 
   return values;
