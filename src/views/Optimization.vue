@@ -90,7 +90,6 @@ export default class Optimizations extends Vue {
   optimizationsUpdated(): void {
     optimizationsStore.set(Object.values(this.optimizations));
   }
-
   addNewOptimization() {
     this.optimizations = {
       ...this.optimizations,

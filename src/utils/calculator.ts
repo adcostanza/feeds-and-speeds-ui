@@ -1,5 +1,5 @@
-import { Machine } from "@/utils/machine";
-import { Cutter } from "@/utils/cutter";
+import { getOutputPower, Machine } from "@/utils/machine";
+import { Cutter, getYoungsModulus } from "@/utils/cutter";
 import { Material } from "@/utils/material";
 import { Store } from "@/utils/store";
 import nerdamer from "nerdamer";
@@ -98,6 +98,76 @@ export const allMathStrings = (
   maxDeflection: maxDeflection(cutterDiameter, cutterShankDiameter),
   maxDeflectionPercent: maxDeflectionPercent,
 });
+
+const formatOutputNumber = (name: string, number: number): string => {
+  if (name.toLowerCase().endsWith("percent")) {
+    return `${(number * 100).toFixed(2)}%`;
+  } else {
+    let fixedDigits;
+    if (number > 0.1 && number < 100) {
+      fixedDigits = 2;
+    } else if (number > 100) {
+      fixedDigits = 1;
+    } else if (number < 0.01) {
+      fixedDigits = 4;
+    } else if (number < 0.001) {
+      fixedDigits = 4;
+    } else {
+      fixedDigits = 6;
+    }
+    return number.toFixed(fixedDigits);
+  }
+};
+
+export interface Inputs {
+  chipload: number;
+  woc: number;
+  doc: number;
+  rpm: number;
+  maxAcceptableDeflection: number;
+  cutterDiameter: number;
+  materialKFactor: number;
+  cutterFlutes: number;
+  maximumMachineForce: number;
+  routerOutputPower: number;
+  cutterOverallStickout: number;
+  cutterYoungsModulus: number;
+  cutterShankDiameter: number;
+}
+
+export const iterativelySubbed = (inputs: Inputs) => {
+  const allMath = allMathStrings(
+    inputs.woc,
+    inputs.cutterDiameter,
+    inputs.cutterShankDiameter
+  );
+  const subbedWithInputs = Object.entries(allMath).reduce(
+    (acc, [key, math]) => {
+      return {
+        ...acc,
+        //@ts-ignore
+        [key]: nerdamer(math, inputs).evaluate(),
+      };
+    },
+    {}
+  );
+
+  const subbedWithOutputs = Object.entries(subbedWithInputs).reduce(
+    (acc, [key, math]) => {
+      return {
+        ...acc,
+        //@ts-ignore
+        [key]: Number(nerdamer(math, acc).evaluate()),
+      };
+    },
+    {}
+  );
+
+  return Object.entries(subbedWithOutputs).reduce((acc, [key, value]) => {
+    //@ts-ignore
+    return { ...acc, [key]: formatOutputNumber(key, value) };
+  }, {});
+};
 
 export const fullySubbed = (
   key: keyof ReturnType<typeof allMathStrings>,

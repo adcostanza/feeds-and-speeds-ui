@@ -116,6 +116,7 @@ import { Cutter } from "@/utils/cutter";
 import { Material } from "@/utils/material";
 import { decimalNumber } from "@/utils/directives";
 import { Optimization } from "@/utils/optimization";
+import * as _ from 'lodash'
 
 @Component({ directives: { decimalNumber } })
 export default class OptimizationForm extends Vue {
@@ -165,6 +166,8 @@ export default class OptimizationForm extends Vue {
       this.minMaxFields[minMaxField].max = this.optimization[minMaxField].max;
       this.minMaxFields[minMaxField].count = this.optimization[minMaxField].count;
     }
+
+    this.executeOptimization()
   }
 
   requiredRule(name: string) {
@@ -194,6 +197,25 @@ export default class OptimizationForm extends Vue {
       rpm: this.numberFields.rpm.value,
       maxAcceptableDeflection: this.numberFields.maxAcceptableDeflection.value,
     });
+    this.executeOptimization()
+  }
+  range({min, max, count}: {min: number, max: number, count: number}): number[] {
+    return _.range(min, max, (max-min)/count)
+  }
+
+  executeOptimization() {
+    const docs = this.range(this.minMaxFields.doc)
+    const wocs = this.range(this.minMaxFields.woc)
+    const chiploads = this.range(this.minMaxFields.chipload)
+
+    _.flatMap(docs, (doc) => {
+      return _.flatMap(wocs, woc => {
+        return chiploads.map(chipload => {
+
+        })
+      })
+    })
+
   }
 
   reset() {

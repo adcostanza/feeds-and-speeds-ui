@@ -1,8 +1,8 @@
 <template>
   <div>
     <v-row>
-    <v-col cols="4">
-      <v-form ref="form" v-model="valid" lazy-validation>
+      <v-col cols="4">
+        <v-form ref="form" v-model="valid" lazy-validation>
           <v-text-field
             v-model="name"
             :rules="[requiredRule('Name')]"
@@ -44,64 +44,70 @@
             color="success"
             hide-details
           ></v-switch>
-        <v-btn
-          :disabled="!valid"
-          color="success"
-          class="mr-4"
-          @click="validate"
-          style="margin: 18px"
-        >
-          Submit
-        </v-btn>
-        <v-btn
-          color="error"
-          class="mr-4"
-          @click="deleteCalculator"
-          style="margin: 18px"
-        >
-          <v-icon>mdi-delete</v-icon>Delete
-        </v-btn>
-      </v-form>
-    </v-col>
-    <v-col cols="8">
-      <v-simple-table>
-        <template v-slot:default>
-          <thead>
-            <tr>
-              <th class="text-left">Calculation</th>
-              <th v-if="showEquations" class="text-left">Equation</th>
-              <th class="text-left">Value</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="[key, value] of Object.entries(allValues)" :key="key">
-              <td>{{ key }}</td>
-              <td v-if="showEquations">
-                <div
-                  v-katex="asTex(key)"
-                  style="font-size: 16pt; padding: 4px"
-                ></div>
-              </td>
-              <td>
-                {{ value }}
-              </td>
-            </tr>
-          </tbody>
-        </template>
-      </v-simple-table>
-      <!--      <div-->
-      <!--        v-katex="subbed('maxDeflectionPercent')"-->
-      <!--        style="font-size: 16pt; padding: 4px"-->
-      <!--      ></div>-->
-    </v-col>
+          <v-btn
+            :disabled="!valid"
+            color="success"
+            class="mr-4"
+            @click="validate"
+            style="margin: 18px"
+          >
+            Submit
+          </v-btn>
+          <v-btn
+            color="error"
+            class="mr-4"
+            @click="deleteCalculator"
+            style="margin: 18px"
+          >
+            <v-icon>mdi-delete</v-icon>Delete
+          </v-btn>
+        </v-form>
+      </v-col>
+      <v-col cols="8">
+        <v-simple-table>
+          <template v-slot:default>
+            <thead>
+              <tr>
+                <th class="text-left">Calculation</th>
+                <th v-if="showEquations" class="text-left">Equation</th>
+                <th class="text-left">Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="[key, value] of Object.entries(allValues)" :key="key">
+                <td>{{ key }}</td>
+                <td v-if="showEquations">
+                  <div
+                    v-katex="asTex(key)"
+                    style="font-size: 16pt; padding: 4px"
+                  ></div>
+                </td>
+                <td>
+                  {{ value }}
+                </td>
+              </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
+        <!--      <div-->
+        <!--        v-katex="subbed('maxDeflectionPercent')"-->
+        <!--        style="font-size: 16pt; padding: 4px"-->
+        <!--      ></div>-->
+      </v-col>
     </v-row>
   </div>
 </template>
 
 <script lang="ts">
 import Component from "vue-class-component";
-import { Prop, Vue, Watch } from "vue-property-decorator";
-import { allMathStrings, Calculator, fullySubbed } from "@/utils/calculator";
+import { Prop, Vue } from "vue-property-decorator";
+import {
+  allMathStrings,
+  Calculator,
+  fullySubbed,
+  Inputs,
+  iterativelySubbed,
+} from "@/utils/calculator";
 import { getOutputPower, Machine } from "@/utils/machine";
 import { Cutter, getYoungsModulus } from "@/utils/cutter";
 import { Material } from "@/utils/material";
@@ -121,12 +127,10 @@ export default class CalculatorForm extends Vue {
   machine: Machine = null;
   cutter: Cutter = null;
   material: Material = null;
-  allMath = {};
-  allValues = {};
 
   showEquations = true;
 
-  formatOutputNumber(name: string, number: number): number {
+  formatOutputNumber(name: string, number: number): string {
     if (name.toLowerCase().endsWith("percent")) {
       return `${(number * 100).toFixed(2)}%`;
     } else {
@@ -146,24 +150,13 @@ export default class CalculatorForm extends Vue {
     }
   }
 
-  @Watch("machine", { deep: true })
-  @Watch("cutter", { deep: true })
-  @Watch("material", { deep: true })
-  @Watch("numberFields", { deep: true })
-  update() {
-    this.allMath = allMathStrings(
-      this.numberFields.woc.value,
-      this.cutter.diameter,
-      this.cutter.shankDiameter
-    );
-
-    const subsFromInputs = {
-      chipload: this.numberFields.chipload.value.toString(),
-      woc: this.numberFields.woc.value.toString(),
-      doc: this.numberFields.doc.value.toString(),
-      rpm: this.numberFields.rpm.value.toString(),
-      maxAcceptableDeflection:
-        this.numberFields.maxAcceptableDeflection.value.toString(),
+  get inputs(): Inputs {
+    return {
+      chipload: this.numberFields.chipload.value,
+      woc: this.numberFields.woc.value,
+      doc: this.numberFields.doc.value,
+      rpm: this.numberFields.rpm.value,
+      maxAcceptableDeflection: this.numberFields.maxAcceptableDeflection.value,
       cutterDiameter: this.cutter.diameter,
       materialKFactor: this.material.kFactor,
       cutterFlutes: this.cutter.flutes,
@@ -171,36 +164,20 @@ export default class CalculatorForm extends Vue {
       routerOutputPower: getOutputPower(this.machine.router),
       cutterOverallStickout: this.cutter.overallStickout,
       cutterYoungsModulus: getYoungsModulus(this.cutter.material),
+      cutterShankDiameter: this.cutter.shankDiameter,
     };
+  }
 
-    const subbedWithInputs = Object.entries(this.allMath).reduce(
-      (acc, [key, math]) => {
-        return {
-          ...acc,
-          //@ts-ignore
-          [key]: nerdamer(math, subsFromInputs).evaluate(),
-        };
-      },
-      {}
+  get allMath() {
+    return allMathStrings(
+      this.inputs.woc,
+      this.inputs.cutterDiameter,
+      this.inputs.cutterShankDiameter
     );
+  }
 
-    const subbedWithOutputs = Object.entries(subbedWithInputs).reduce(
-      (acc, [key, math]) => {
-        return {
-          ...acc,
-          //@ts-ignore
-          [key]: Number(nerdamer(math, acc).evaluate()),
-        };
-      },
-      {}
-    );
-
-    this.allValues = Object.entries(subbedWithOutputs).reduce(
-      (acc, [key, value]) => {
-        return { ...acc, [key]: this.formatOutputNumber(key, value) };
-      },
-      {}
-    );
+  get allValues() {
+    return iterativelySubbed(this.inputs);
   }
 
   asTex(key: string) {
