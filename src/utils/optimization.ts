@@ -79,7 +79,14 @@ export const executeOptimization = ({
           cutterShankDiameter: cutter.shankDiameter,
         };
         const result = iterativelySubbed(inputs);
-        return result;
+        let constraintFulfilled = true;
+        for (const constraint of constraints) {
+          if (!constraint.constraintFulfilled(result)) {
+            constraintFulfilled = false;
+            break;
+          }
+        }
+        return { ...result, constraintFulfilled };
       });
     });
   });
@@ -101,8 +108,6 @@ class Constraint {
   constructor(private stringValue: string) {
     for (const [type, regex] of Object.entries(regexes)) {
       const matches = stringValue.match(regex);
-      console.log(matches);
-      console.log(matches.length);
       if (matches.length >= 3) {
         if (isNumeric(matches[2])) {
           this.value = parseFloat(matches[2]);
