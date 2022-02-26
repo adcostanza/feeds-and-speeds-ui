@@ -78,7 +78,7 @@ export const executeOptimization = ({
           cutterYoungsModulus: getYoungsModulus(cutter.material),
           cutterShankDiameter: cutter.shankDiameter,
         };
-        const result = iterativelySubbed(inputs);
+        const result = iterativelySubbed(inputs, false);
         let constraintFulfilled = true;
         for (const constraint of constraints) {
           if (!constraint.constraintFulfilled(result)) {

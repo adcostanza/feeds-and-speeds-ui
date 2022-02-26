@@ -1,5 +1,5 @@
-import { getOutputPower, Machine } from "@/utils/machine";
-import { Cutter, getYoungsModulus } from "@/utils/cutter";
+import { Machine } from "@/utils/machine";
+import { Cutter } from "@/utils/cutter";
 import { Material } from "@/utils/material";
 import { Store } from "@/utils/store";
 import nerdamer from "nerdamer";
@@ -135,7 +135,7 @@ export interface Inputs {
   cutterShankDiameter: number;
 }
 
-export const iterativelySubbed = (inputs: Inputs) => {
+export const iterativelySubbed = (inputs: Inputs, withFormatting = true) => {
   const allMath = allMathStrings(
     inputs.woc,
     inputs.cutterDiameter,
@@ -163,10 +163,14 @@ export const iterativelySubbed = (inputs: Inputs) => {
     {}
   );
 
-  return Object.entries(subbedWithOutputs).reduce((acc, [key, value]) => {
-    //@ts-ignore
-    return { ...acc, [key]: formatOutputNumber(key, value) };
-  }, {});
+  if (withFormatting) {
+    return Object.entries(subbedWithOutputs).reduce((acc, [key, value]) => {
+      //@ts-ignore
+      return { ...acc, [key]: formatOutputNumber(key, value) };
+    }, {});
+  } else {
+    return subbedWithOutputs;
+  }
 };
 
 export const fullySubbed = (
