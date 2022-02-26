@@ -102,12 +102,12 @@ export default class Optimizations extends Vue {
         woc: {
           min: this.defaultCutter.diameter * 0.01,
           max: this.defaultCutter.diameter * 1,
-          count: 100,
+          count: 5,
         },
         doc: {
           min: this.defaultCutter.diameter * 0.01,
           max: this.defaultCutter.diameter * 2,
-          count: 100,
+          count: 5,
         },
         constraints: [
           "machineForcePercent < 0.25",

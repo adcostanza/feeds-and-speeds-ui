@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row>
-      <v-col cols="6">
+      <v-col cols="12">
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-text-field
             v-model="name"
@@ -89,10 +89,10 @@
             :disabled="!valid"
             color="success"
             class="mr-4"
-            @click="validate"
+            @click="save"
             style="margin: 18px"
           >
-            Submit
+            Save
           </v-btn>
           <v-btn
             color="error"
@@ -105,6 +105,35 @@
         </v-form>
       </v-col>
     </v-row>
+    <v-row>
+      <v-simple-table>
+        <template v-slot:default>
+          <thead>
+            <tr>
+              <th class="text-left">#</th>
+              <th
+                v-for="key of Object.keys(optimization.results[0])"
+                :key="key"
+                class="text-left"
+              >
+                {{ key }}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="[i, result] of optimization.results.entries()" :key="i">
+              <td>{{ i }}</td>
+              <td
+                v-for="[key, resultValue] of Object.entries(result)"
+                :key="key"
+              >
+                {{ resultValue }}
+              </td>
+            </tr>
+          </tbody>
+        </template>
+      </v-simple-table>
+    </v-row>
   </div>
 </template>
 
@@ -115,8 +144,11 @@ import { Machine } from "@/utils/machine";
 import { Cutter } from "@/utils/cutter";
 import { Material } from "@/utils/material";
 import { decimalNumber } from "@/utils/directives";
-import { Optimization } from "@/utils/optimization";
-import * as _ from 'lodash'
+import {
+  executeOptimization,
+  MinMaxField,
+  Optimization,
+} from "@/utils/optimization";
 
 @Component({ directives: { decimalNumber } })
 export default class OptimizationForm extends Vue {
@@ -138,7 +170,7 @@ export default class OptimizationForm extends Vue {
   maximizeMMR = true;
   constraints = "";
 
-  minMaxFields = {
+  minMaxFields: Record<string, MinMaxField> = {
     chipload: { name: "Chipload", min: 0.001, max: 0.001, count: 1 },
     woc: { name: "Width of Cut", min: 0, max: 0, count: 1 },
     doc: { name: "Depth of Cut", min: 0, max: 0, count: 1 },
@@ -164,10 +196,9 @@ export default class OptimizationForm extends Vue {
     for (const minMaxField of Object.keys(this.minMaxFields)) {
       this.minMaxFields[minMaxField].min = this.optimization[minMaxField].min;
       this.minMaxFields[minMaxField].max = this.optimization[minMaxField].max;
-      this.minMaxFields[minMaxField].count = this.optimization[minMaxField].count;
+      this.minMaxFields[minMaxField].count =
+        this.optimization[minMaxField].count;
     }
-
-    this.executeOptimization()
   }
 
   requiredRule(name: string) {
@@ -178,13 +209,23 @@ export default class OptimizationForm extends Vue {
         return `${name} must be a number`;
       } else if (v < 0) {
         return `${name} must be positive`;
+      } else {
+        return true;
       }
     };
   }
 
-  validate() {
+  save() {
     //@ts-ignore
     this.$refs.form.validate();
+    const results = executeOptimization({
+      minMaxFields: this.minMaxFields,
+      numberFields: this.numberFields,
+      cutter: this.cutter,
+      material: this.material,
+      machine: this.machine,
+    });
+
     this.updateOptimization({
       name: this.name,
       machine: this.machine,
@@ -196,26 +237,8 @@ export default class OptimizationForm extends Vue {
       constraints: this.constraints.split("\n"),
       rpm: this.numberFields.rpm.value,
       maxAcceptableDeflection: this.numberFields.maxAcceptableDeflection.value,
+      results: results,
     });
-    this.executeOptimization()
-  }
-  range({min, max, count}: {min: number, max: number, count: number}): number[] {
-    return _.range(min, max, (max-min)/count)
-  }
-
-  executeOptimization() {
-    const docs = this.range(this.minMaxFields.doc)
-    const wocs = this.range(this.minMaxFields.woc)
-    const chiploads = this.range(this.minMaxFields.chipload)
-
-    _.flatMap(docs, (doc) => {
-      return _.flatMap(wocs, woc => {
-        return chiploads.map(chipload => {
-
-        })
-      })
-    })
-
   }
 
   reset() {
