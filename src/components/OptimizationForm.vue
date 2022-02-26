@@ -224,6 +224,7 @@ export default class OptimizationForm extends Vue {
       cutter: this.cutter,
       material: this.material,
       machine: this.machine,
+      constraintStrings: this.constraints.split("\n"),
     });
 
     this.updateOptimization({

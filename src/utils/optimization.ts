@@ -43,16 +43,22 @@ export const executeOptimization = ({
   cutter,
   material,
   machine,
+  constraintStrings,
 }: {
   minMaxFields: Record<string, MinMaxField>;
   numberFields: Record<string, { name: string; value: number }>;
   cutter: Cutter;
   material: Material;
   machine: Machine;
+  constraintStrings: string[];
 }) => {
   const docs = range(minMaxFields.doc);
   const wocs = range(minMaxFields.woc);
   const chiploads = range(minMaxFields.chipload);
+
+  const constraints = constraintStrings.map((ea) => {
+    return new Constraint(ea);
+  });
 
   const values = _.flatMap(docs, (doc) => {
     return _.flatMap(wocs, (woc) => {
@@ -72,15 +78,83 @@ export const executeOptimization = ({
           cutterYoungsModulus: getYoungsModulus(cutter.material),
           cutterShankDiameter: cutter.shankDiameter,
         };
-        console.log(inputs);
         const result = iterativelySubbed(inputs);
-        console.log(result);
         return result;
       });
     });
   });
 
-  console.log(values[1]);
-
   return values;
 };
+
+const regexes = {
+  lessThan: /([A-z]+)\s*<\s*([0-9\\.]+)/,
+  lessThanOrEqual: /([A-z]+)\s*<=\s*([0-9\\.]+)/,
+  greaterThan: /([A-z]+)\s*>\s*([0-9\\.]+)/,
+  greaterThanOrEqual: /([A-z]+)\s*>=\s*([0-9\\.]+)/,
+};
+
+class Constraint {
+  key: string;
+  value: number;
+  type: keyof typeof regexes;
+  constructor(private stringValue: string) {
+    for (const [type, regex] of Object.entries(regexes)) {
+      const matches = stringValue.match(regex);
+      console.log(matches);
+      console.log(matches.length);
+      if (matches.length >= 3) {
+        if (isNumeric(matches[2])) {
+          this.value = parseFloat(matches[2]);
+          this.key = matches[1];
+          this.type = type as keyof typeof regexes;
+        } else if (isNumeric(matches[1])) {
+          this.value = parseFloat(matches[1]);
+          this.key = matches[2];
+          switch (type) {
+            case "lessThan":
+              this.type = "greaterThan";
+              break;
+            case "greaterThan":
+              this.type = "lessThan";
+              break;
+            case "lessThanOrEqual":
+              this.type = "greaterThanOrEqual";
+              break;
+            case "greaterThanOrEqual":
+              this.type = "lessThanOrEqual";
+              break;
+          }
+        } else {
+          throw Error("LHS or RHS must be number");
+        }
+        break;
+      }
+    }
+    if (this.key === undefined) {
+      throw Error("No constraint match");
+    }
+  }
+
+  constraintFulfilled(result: Record<string, number>): boolean {
+    switch (this.type) {
+      case "lessThan":
+        return result[this.key] < this.value;
+      case "greaterThan":
+        return result[this.key] > this.value;
+      case "lessThanOrEqual":
+        return result[this.key] <= this.value;
+      case "greaterThanOrEqual":
+        return result[this.key] >= this.value;
+    }
+  }
+}
+
+function isNumeric(str: string | number) {
+  if (typeof str != "string") return false; // we only process strings!
+  return (
+    //@ts-ignore
+    !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+    !isNaN(parseFloat(str))
+  ); // ...and ensure strings of whitespace fail
+}
