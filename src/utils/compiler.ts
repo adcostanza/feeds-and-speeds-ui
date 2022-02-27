@@ -143,37 +143,68 @@ export const subEquations = (inputs: ConditionalInput) => {
 
   //max deflection has issue
   //@ts-ignore
-  const subbedWithOutputs = Object.entries(allMath).reduce(
-    (acc, [key, math]) => {
+  const subbedWithOutputs: Record<keyof OutputFunctions, Expression> =
+    Object.entries(allMath).reduce((acc, [key, math]) => {
       return {
         ...acc,
         //@ts-ignore
         [key]: nerdamer(math, acc),
       };
-    },
-    {}
-  );
+    }, {});
 
-  const toFunctions = Object.entries(subbedWithOutputs).reduce(
+  const toFunctions: OutputFunctions = Object.entries(subbedWithOutputs).reduce(
     (acc, [key, math]) => {
+      const positionalFn = math.buildFunction([
+        "chipload",
+        "woc",
+        "doc",
+        "rpm",
+        "maxAcceptableDeflection",
+        "cutterDiameter",
+        "materialKFactor",
+        "cutterFlutes",
+        "maximumMachineForce",
+        "routerOutputPower",
+        "cutterOverallStickout",
+        "cutterYoungsModulus",
+        "cutterShankDiameter",
+      ]);
+
+      const namedFn = ({
+        chipload,
+        woc,
+        doc,
+        rpm,
+        maxAcceptableDeflection,
+        cutterDiameter,
+        materialKFactor,
+        cutterFlutes,
+        maximumMachineForce,
+        routerOutputPower,
+        cutterOverallStickout,
+        cutterYoungsModulus,
+        cutterShankDiameter,
+      }: Inputs) =>
+        positionalFn(
+          chipload,
+          woc,
+          doc,
+          rpm,
+          maxAcceptableDeflection,
+          cutterDiameter,
+          materialKFactor,
+          cutterFlutes,
+          maximumMachineForce,
+          routerOutputPower,
+          cutterOverallStickout,
+          cutterYoungsModulus,
+          cutterShankDiameter
+        );
+
       return {
         ...acc,
         //@ts-ignore
-        [key]: math.buildFunction([
-          "chipload",
-          "woc",
-          "doc",
-          "rpm",
-          "maxAcceptableDeflection",
-          "cutterDiameter",
-          "materialKFactor",
-          "cutterFlutes",
-          "maximumMachineForce",
-          "routerOutputPower",
-          "cutterOverallStickout",
-          "cutterYoungsModulus",
-          "cutterShankDiameter",
-        ]),
+        [key]: namedFn,
       };
     },
     {}
@@ -182,8 +213,9 @@ export const subEquations = (inputs: ConditionalInput) => {
   return toFunctions;
 };
 
-// const compilerOutputs = compilerInputs.map((compilerInput) => {
-//   const equations = subEquations(compilerInput.compilerValues);
-//   console.log(equations);
-//   console.log("hi");
-// });
+const compilerOutputs: CompilerOutput[] = compilerInputs.map(
+  (compilerInput) => {
+    const functions = subEquations(compilerInput.compilerValues);
+    return { condition: compilerInput.condition, functions: functions };
+  }
+);

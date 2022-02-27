@@ -7,8 +7,5 @@ test("compiler inputs make sense", () => {
 });
 
 test("another test", () => {
-  const compilerOutputs = compilerInputs.map((compilerInput) => {
-    const equations = subEquations(compilerInput.compilerValues);
-    return equations;
-  });
+
 });
