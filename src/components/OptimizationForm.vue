@@ -106,12 +106,12 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-simple-table>
+      <v-simple-table v-if="results">
         <template v-slot:default>
           <thead>
             <tr>
               <th
-                v-for="key of Object.keys(optimization.results[0])"
+                v-for="key of Object.keys(results[0])"
                 :key="key"
                 class="text-left"
               >
@@ -120,7 +120,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="[i, result] of optimization.results.entries()" :key="i">
+            <tr v-for="[i, result] of results.entries()" :key="i">
               <td
                 v-for="[key, resultValue] of Object.entries(result)"
                 :key="key"
@@ -167,6 +167,7 @@ export default class OptimizationForm extends Vue {
   allValues = {};
   maximizeMMR = true;
   constraints = "";
+  results: Record<string, number>[] = [];
 
   minMaxFields: Record<string, MinMaxField> = {
     chipload: { name: "Chipload", min: 0.001, max: 0.001, count: 1 },
@@ -181,6 +182,12 @@ export default class OptimizationForm extends Vue {
     },
   };
 
+  updateResults(results: Record<string, number>[]) {
+    console.log(results);
+    this.results = [...results];
+    console.log("updates");
+    
+  }
   created() {
     //@ts-ignore
     this.name = this.optimization.name;
@@ -188,6 +195,7 @@ export default class OptimizationForm extends Vue {
     this.cutter = this.optimization.cutter;
     this.material = this.optimization.material;
     this.constraints = this.optimization.constraints.join("\n");
+    this.results = this.optimization.results || [];
     for (const numberField of Object.keys(this.numberFields)) {
       this.numberFields[numberField].value = this.optimization[numberField];
     }
@@ -216,13 +224,14 @@ export default class OptimizationForm extends Vue {
   save() {
     //@ts-ignore
     this.$refs.form.validate();
-    const results = executeOptimization({
+    executeOptimization({
       minMaxFields: this.minMaxFields,
       numberFields: this.numberFields,
       cutter: this.cutter,
       material: this.material,
       machine: this.machine,
       constraintStrings: this.constraints.split("\n"),
+      updateResults: this.updateResults,
     });
 
     this.updateOptimization({
@@ -236,7 +245,7 @@ export default class OptimizationForm extends Vue {
       constraints: this.constraints.split("\n"),
       rpm: this.numberFields.rpm.value,
       maxAcceptableDeflection: this.numberFields.maxAcceptableDeflection.value,
-      results: results,
+      results: this.results,
     });
   }
 

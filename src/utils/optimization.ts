@@ -2,7 +2,6 @@ import { getOutputPower, Machine } from "@/utils/machine";
 import { Cutter, getYoungsModulus } from "@/utils/cutter";
 import { Material } from "@/utils/material";
 import { Store } from "@/utils/store";
-import { iterativelySubbed } from "@/utils/calculator";
 import * as _ from "lodash";
 import { compiledFunctions } from "@/utils/compiled";
 import { fromPositionalToNamed } from "@/utils/compiler";
@@ -46,6 +45,7 @@ export const executeOptimization = ({
   material,
   machine,
   constraintStrings,
+  updateResults,
 }: {
   minMaxFields: Record<string, MinMaxField>;
   numberFields: Record<string, { name: string; value: number }>;
@@ -53,6 +53,7 @@ export const executeOptimization = ({
   material: Material;
   machine: Machine;
   constraintStrings: string[];
+  updateResults: (results: Record<string, number>[]) => void;
 }) => {
   const docs = range(minMaxFields.doc);
   const wocs = range(minMaxFields.woc);
@@ -63,9 +64,11 @@ export const executeOptimization = ({
   });
 
   let count = 1;
-  const values = _.flatMap(docs, (doc) => {
-    return _.flatMap(wocs, (woc) => {
-      return chiploads.map((chipload) => {
+  const results = [];
+
+  for (const doc of docs) {
+    for (const woc of wocs) {
+      for (const chipload of chiploads) {
         const inputs = {
           chipload: chipload,
           woc: woc,
@@ -111,10 +114,15 @@ export const executeOptimization = ({
 
         const resultWithMetadata = { ...result, constraintFulfilled, count };
         count++;
-        return resultWithMetadata;
-      });
-    });
-  }).sort((a, b) => {
+
+        results.push(resultWithMetadata);
+
+        updateResults(results);
+      }
+    }
+  }
+
+  results.sort((a, b) => {
     if (a.constraintFulfilled && b.constraintFulfilled) {
       return b.materialRemovalRate - a.materialRemovalRate;
     } else if (a.constraintFulfilled && !b.constraintFulfilled) {
@@ -124,7 +132,9 @@ export const executeOptimization = ({
     }
   });
 
-  return values;
+  updateResults(results);
+
+  return results;
 };
 
 const regexes = {

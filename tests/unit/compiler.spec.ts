@@ -1,4 +1,4 @@
-import { compilerInputs, subEquations } from "@/utils/compiler";
+import { compilerInputs, CompilerOutput, subEquations } from "@/utils/compiler";
 
 test("compiler inputs make sense", () => {
   for (const compilerInput of compilerInputs) {
@@ -6,6 +6,21 @@ test("compiler inputs make sense", () => {
   }
 });
 
-test("another test", () => {
+test("do compilation", () => {
+  //@ts-ignore
+  const compilerOutputs: CompilerOutput[] = compilerInputs.map(
+    (compilerInput) => {
+      const functions = subEquations(compilerInput.compilerValues);
+      return {
+        condition: compilerInput.condition.toString(),
+        functions: functions,
+      };
+    }
+  );
 
+  const json = JSON.stringify(compilerOutputs)
+    .replaceAll('"', "")
+    .replaceAll("\\n", "");
+
+  console.log(json);
 });
