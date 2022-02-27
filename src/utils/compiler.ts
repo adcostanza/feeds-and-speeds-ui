@@ -141,6 +141,7 @@ export const subEquations = (inputs: ConditionalInput) => {
     inputs.cutterShankDiameter
   );
 
+  //max deflection has issue
   //@ts-ignore
   const subbedWithOutputs = Object.entries(allMath).reduce(
     (acc, [key, math]) => {
