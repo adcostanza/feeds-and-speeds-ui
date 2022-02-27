@@ -81,11 +81,25 @@ export const maxDeflection = (
 
 export const maxDeflectionPercent = "maxDeflection / maxAcceptableDeflection";
 
+export interface NerdamerEquations {
+  adjustedChipload: string;
+  feedrate: string;
+  materialRemovalRate: string;
+  powerUsage: string;
+  torque: string;
+  machineForce: string;
+  machineForcePercent: string;
+  availablePowerPercent: string;
+  routerCutterPowerIncrease: string;
+  maxDeflection: string;
+  maxDeflectionPercent: string;
+}
+
 export const allMathStrings = (
   woc: number,
   cutterDiameter: number,
   cutterShankDiameter: number
-) => ({
+): NerdamerEquations => ({
   adjustedChipload: adjustedChipload(woc, cutterDiameter),
   feedrate: feedrate,
   materialRemovalRate: materialRemovalRate,
