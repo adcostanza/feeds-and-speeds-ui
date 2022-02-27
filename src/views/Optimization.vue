@@ -117,6 +117,7 @@ export default class Optimizations extends Vue {
         ],
         rpm: 18000,
         maxAcceptableDeflection: 0.001,
+        results: [],
       },
     };
   }

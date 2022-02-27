@@ -116,6 +116,7 @@ export const executeOptimization = ({
     });
   }).sort((a, b) => {
     if (a.constraintFulfilled && b.constraintFulfilled) {
+      //@ts-ignore
       return b.materialRemovalRate - a.materialRemovalRate;
     } else if (a.constraintFulfilled && !b.constraintFulfilled) {
       return -1;
