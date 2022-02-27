@@ -33,7 +33,7 @@ export const compilerInputs: CompilerInput[] = [
       cutterDiameter: number;
       cutterShankDiameter: number;
       woc: number;
-    }) => {
+    }): boolean => {
       return cutterDiameter < cutterShankDiameter && woc > cutterDiameter / 2;
     },
     compilerValues: {
@@ -51,12 +51,84 @@ export const compilerInputs: CompilerInput[] = [
       cutterDiameter: number;
       cutterShankDiameter: number;
       woc: number;
-    }) => {
+    }): boolean => {
+      return cutterDiameter == cutterShankDiameter && woc > cutterDiameter / 2;
+    },
+    compilerValues: {
+      cutterDiameter: 1,
+      cutterShankDiameter: 1,
+      woc: 10,
+    },
+  },
+  {
+    condition: ({
+      cutterDiameter,
+      cutterShankDiameter,
+      woc,
+    }: {
+      cutterDiameter: number;
+      cutterShankDiameter: number;
+      woc: number;
+    }): boolean => {
+      return cutterDiameter > cutterShankDiameter && woc > cutterDiameter / 2;
+    },
+    compilerValues: {
+      cutterDiameter: 1,
+      cutterShankDiameter: 0,
+      woc: 10,
+    },
+  },
+  {
+    condition: ({
+      cutterDiameter,
+      cutterShankDiameter,
+      woc,
+    }: {
+      cutterDiameter: number;
+      cutterShankDiameter: number;
+      woc: number;
+    }): boolean => {
       return cutterDiameter < cutterShankDiameter && woc <= cutterDiameter / 2;
     },
     compilerValues: {
       cutterDiameter: 0,
       cutterShankDiameter: 1,
+      woc: -1,
+    },
+  },
+  {
+    condition: ({
+      cutterDiameter,
+      cutterShankDiameter,
+      woc,
+    }: {
+      cutterDiameter: number;
+      cutterShankDiameter: number;
+      woc: number;
+    }): boolean => {
+      return cutterDiameter == cutterShankDiameter && woc <= cutterDiameter / 2;
+    },
+    compilerValues: {
+      cutterDiameter: 1,
+      cutterShankDiameter: 1,
+      woc: -1,
+    },
+  },
+  {
+    condition: ({
+      cutterDiameter,
+      cutterShankDiameter,
+      woc,
+    }: {
+      cutterDiameter: number;
+      cutterShankDiameter: number;
+      woc: number;
+    }): boolean => {
+      return cutterDiameter > cutterShankDiameter && woc <= cutterDiameter / 2;
+    },
+    compilerValues: {
+      cutterDiameter: 1,
+      cutterShankDiameter: 0,
       woc: -1,
     },
   },
