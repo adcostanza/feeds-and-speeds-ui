@@ -83,7 +83,7 @@ export const executeOptimization = ({
           cutterLength: cutter.length,
         };
         const functionsForCondition = compiledFunctions.find((ea) => {
-          ea.condition({
+          return ea.condition({
             cutterDiameter: inputs.cutterDiameter,
             cutterShankDiameter: inputs.cutterShankDiameter,
             woc: inputs.woc,
