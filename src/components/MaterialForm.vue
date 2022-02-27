@@ -55,7 +55,6 @@ export default class MaterialForm extends Vue {
   }
 
   valid = true;
-  name = "";
   requiredRule(name: string) {
     return (v) => !!v || `${name} is required`;
   }

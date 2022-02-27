@@ -236,6 +236,7 @@ export default class OptimizationForm extends Vue {
       constraints: this.constraints.split("\n"),
       rpm: this.numberFields.rpm.value,
       maxAcceptableDeflection: this.numberFields.maxAcceptableDeflection.value,
+      //@ts-ignore
       results: results,
     });
   }
