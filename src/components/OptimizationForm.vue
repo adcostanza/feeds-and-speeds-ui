@@ -141,14 +141,14 @@ import { Prop, Vue } from "vue-property-decorator";
 import { Machine } from "@/utils/machine";
 import { Cutter } from "@/utils/cutter";
 import { Material } from "@/utils/material";
-import { decimalNumber } from "@/utils/directives";
+// import { decimalNumber } from "@/utils/directives";
 import {
   executeOptimization,
   MinMaxField,
   Optimization,
 } from "@/utils/optimization";
 
-@Component({ directives: { decimalNumber } })
+@Component
 export default class OptimizationForm extends Vue {
   @Prop({ required: true }) optimization!: Optimization;
   @Prop({ required: true }) potentialCutters!: Cutter[];
