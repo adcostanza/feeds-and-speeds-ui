@@ -147,7 +147,7 @@ export const subEquations = (inputs: ConditionalInput) => {
       return {
         ...acc,
         //@ts-ignore
-        [key]: nerdamer(math, acc).evaluate(),
+        [key]: nerdamer(math, acc).evaluate().toString(),
       };
     },
     {}
@@ -178,7 +178,7 @@ export const subEquations = (inputs: ConditionalInput) => {
     {}
   );
 
-  return subbedWithOutputs;
+  return toFunctions;
 };
 
 // const compilerOutputs = compilerInputs.map((compilerInput) => {
