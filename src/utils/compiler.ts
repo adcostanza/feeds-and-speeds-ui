@@ -142,28 +142,37 @@ export const subEquations = (inputs: ConditionalInput) => {
   );
 
   //@ts-ignore
-  const subbedWithOutputs: OutputFunctions = Object.entries(allMath).reduce(
+  const subbedWithOutputs = Object.entries(allMath).reduce(
     (acc, [key, math]) => {
       return {
         ...acc,
         //@ts-ignore
-        [key]: nerdamer(math, acc)
-          .evaluate()
-          .buildFunction([
-            "chipload",
-            "woc",
-            "doc",
-            "rpm",
-            "maxAcceptableDeflection",
-            "cutterDiameter",
-            "materialKFactor",
-            "cutterFlutes",
-            "maximumMachineForce",
-            "routerOutputPower",
-            "cutterOverallStickout",
-            "cutterYoungsModulus",
-            "cutterShankDiameter",
-          ]),
+        [key]: nerdamer(math, acc).evaluate(),
+      };
+    },
+    {}
+  );
+
+  const toFunctions = Object.entries(subbedWithOutputs).reduce(
+    (acc, [key, math]) => {
+      return {
+        ...acc,
+        //@ts-ignore
+        [key]: math.buildFunction([
+          "chipload",
+          "woc",
+          "doc",
+          "rpm",
+          "maxAcceptableDeflection",
+          "cutterDiameter",
+          "materialKFactor",
+          "cutterFlutes",
+          "maximumMachineForce",
+          "routerOutputPower",
+          "cutterOverallStickout",
+          "cutterYoungsModulus",
+          "cutterShankDiameter",
+        ]),
       };
     },
     {}
@@ -172,8 +181,8 @@ export const subEquations = (inputs: ConditionalInput) => {
   return subbedWithOutputs;
 };
 
-const compilerOutputs = compilerInputs.map((compilerInput) => {
-  const equations = subEquations(compilerInput.compilerValues);
-  console.log(equations);
-  console.log("hi");
-});
+// const compilerOutputs = compilerInputs.map((compilerInput) => {
+//   const equations = subEquations(compilerInput.compilerValues);
+//   console.log(equations);
+//   console.log("hi");
+// });
