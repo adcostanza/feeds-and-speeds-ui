@@ -186,9 +186,18 @@ export const subEquations = (inputs: ConditionalInput) => {
 const compilerOutputs: CompilerOutput[] = compilerInputs.map(
   (compilerInput) => {
     const functions = subEquations(compilerInput.compilerValues);
-    return { condition: compilerInput.condition, functions: functions };
+    return {
+      condition: compilerInput.condition.toString(),
+      functions: functions,
+    };
   }
 );
+
+const json = JSON.stringify(compilerOutputs)
+  .replaceAll('"', "")
+  .replaceAll("\\n", "");
+
+console.log(json);
 
 const fromPositionalToNamed = (
   fn: (
