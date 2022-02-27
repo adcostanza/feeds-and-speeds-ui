@@ -164,6 +164,7 @@ export default class CalculatorForm extends Vue {
       cutterOverallStickout: this.cutter.overallStickout,
       cutterYoungsModulus: getYoungsModulus(this.cutter.material),
       cutterShankDiameter: this.cutter.shankDiameter,
+      cutterLength: this.cutter.length
     };
   }
 
