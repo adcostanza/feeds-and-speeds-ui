@@ -55,10 +55,10 @@ export const maxDeflection = (
         (3 *
           cutterYoungsModulus *
           ((pi * (cutterDiameter / 2)^4) / 4)) +
-        pow(cutterOverallStickout - cutterLength, 3) /
+        ((cutterOverallStickout - cutterLength)^3) /
         (3 *
           cutterYoungsModulus *
-          ((pi * (cutterShankDiameter / 2)^4) / 4)))
+          ((pi * (cutterShankDiameter / 2)^4) / 4))
     )`;
   } else if (cutterDiameter == cutterShankDiameter) {
     return `
