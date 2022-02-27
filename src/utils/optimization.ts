@@ -4,6 +4,8 @@ import { Material } from "@/utils/material";
 import { Store } from "@/utils/store";
 import { iterativelySubbed } from "@/utils/calculator";
 import * as _ from "lodash";
+import { compiledFunctions } from "@/utils/compiled";
+import { fromPositionalToNamed } from "@/utils/compiler";
 
 export interface Optimization {
   name: string;
@@ -78,8 +80,27 @@ export const executeOptimization = ({
           cutterOverallStickout: cutter.overallStickout,
           cutterYoungsModulus: getYoungsModulus(cutter.material),
           cutterShankDiameter: cutter.shankDiameter,
+          cutterLength: cutter.length,
         };
-        const result = iterativelySubbed(inputs, false);
+        const functionsForCondition = compiledFunctions.find((ea) => {
+          ea.condition({
+            cutterDiameter: inputs.cutterDiameter,
+            cutterShankDiameter: inputs.cutterShankDiameter,
+            woc: inputs.woc,
+          });
+        })?.functions;
+
+        if (functionsForCondition === undefined) {
+          throw Error("Can't find functions for condition");
+        }
+
+        const result = Object.entries(functionsForCondition).reduce(
+          (acc, [key, fn]) => {
+            return { ...acc, [key]: fromPositionalToNamed(fn, inputs) };
+          },
+          {}
+        );
+
         let constraintFulfilled = true;
         for (const constraint of constraints) {
           if (!constraint.constraintFulfilled(result)) {

@@ -200,7 +200,7 @@ const json = JSON.stringify(compilerOutputs)
 
 console.log(json);
 
-const fromPositionalToNamed = (
+export const fromPositionalToNamed = (
   fn: (
     chipload: number,
     woc: number,
