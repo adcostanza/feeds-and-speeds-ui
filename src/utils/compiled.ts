@@ -17,7 +17,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return chipload;
       },
@@ -34,7 +35,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return chipload * cutterFlutes * rpm;
       },
@@ -51,7 +53,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return chipload * cutterFlutes * doc * rpm * woc;
       },
@@ -68,7 +71,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           chipload *
@@ -92,7 +96,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           63024 *
@@ -112,7 +117,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           126048 *
@@ -137,7 +143,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           126048 *
@@ -163,7 +170,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           chipload *
@@ -188,7 +196,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           745.7 *
@@ -213,7 +222,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           126048 *
@@ -248,7 +258,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           126048 *
@@ -291,7 +302,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return chipload;
       },
@@ -308,7 +320,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return chipload * cutterFlutes * rpm;
       },
@@ -325,7 +338,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return chipload * cutterFlutes * doc * rpm * woc;
       },
@@ -342,7 +356,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           chipload *
@@ -366,7 +381,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           63024 *
@@ -386,7 +402,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           126048 *
@@ -411,7 +428,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           126048 *
@@ -437,7 +455,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           chipload *
@@ -462,7 +481,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           745.7 *
@@ -487,7 +507,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           855942.92338548168451638159 *
@@ -514,7 +535,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           855942.92338548168451638159 *
@@ -549,7 +571,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return chipload;
       },
@@ -566,7 +589,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return chipload * cutterFlutes * rpm;
       },
@@ -583,7 +607,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return chipload * cutterFlutes * doc * rpm * woc;
       },
@@ -600,7 +625,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           chipload *
@@ -624,7 +650,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           63024 *
@@ -644,7 +671,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           126048 *
@@ -669,7 +697,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           126048 *
@@ -695,7 +724,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           chipload *
@@ -720,7 +750,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           745.7 *
@@ -745,7 +776,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           855942.92338548168451638159 *
@@ -773,7 +805,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           855942.92338548168451638159 *
@@ -809,7 +842,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           0.5 *
@@ -831,7 +865,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           0.5 *
@@ -855,7 +890,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           0.5 *
@@ -881,7 +917,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           0.5 *
@@ -908,7 +945,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           31512 *
@@ -934,7 +972,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           63024 *
@@ -959,7 +998,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           63024 *
@@ -985,7 +1025,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           0.5 *
@@ -1013,7 +1054,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           372.85 *
@@ -1040,7 +1082,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           63024 *
@@ -1075,7 +1118,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           63024 *
@@ -1118,7 +1162,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           0.5 *
@@ -1140,7 +1185,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           0.5 *
@@ -1164,7 +1210,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           0.5 *
@@ -1190,7 +1237,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           0.5 *
@@ -1217,7 +1265,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           31512 *
@@ -1243,7 +1292,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           63024 *
@@ -1268,7 +1318,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           63024 *
@@ -1294,7 +1345,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           0.5 *
@@ -1322,7 +1374,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           372.85 *
@@ -1349,7 +1402,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           427971.46169274084225819079 *
@@ -1377,7 +1431,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           427971.46169274084225819079 *
@@ -1413,7 +1468,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           0.5 *
@@ -1435,7 +1491,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           0.5 *
@@ -1459,7 +1516,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           0.5 *
@@ -1485,7 +1543,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           0.5 *
@@ -1512,7 +1571,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           31512 *
@@ -1538,7 +1598,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           63024 *
@@ -1563,7 +1624,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           63024 *
@@ -1589,7 +1651,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           0.5 *
@@ -1617,7 +1680,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           372.85 *
@@ -1644,7 +1708,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           427971.46169274084225819079 *
@@ -1672,7 +1737,8 @@ export const compiledFunctions = [
         routerOutputPower,
         cutterOverallStickout,
         cutterYoungsModulus,
-        cutterShankDiameter
+        cutterShankDiameter,
+        cutterLength
       ) {
         return (
           427971.46169274084225819079 *

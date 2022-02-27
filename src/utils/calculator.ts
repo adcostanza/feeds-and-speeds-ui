@@ -147,6 +147,7 @@ export interface Inputs {
   cutterOverallStickout: number;
   cutterYoungsModulus: number;
   cutterShankDiameter: number;
+  cutterLength: number;
 }
 
 export const iterativelySubbed = (inputs: Inputs, withFormatting = true) => {

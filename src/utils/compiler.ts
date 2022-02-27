@@ -169,6 +169,7 @@ export const subEquations = (inputs: ConditionalInput) => {
         "cutterOverallStickout",
         "cutterYoungsModulus",
         "cutterShankDiameter",
+        "cutterLength",
       ]);
       return {
         ...acc,
@@ -213,7 +214,8 @@ const fromPositionalToNamed = (
     routerOutputPower: number,
     cutterOverallStickout: number,
     cutterYoungsModulus: number,
-    cutterShankDiameter: number
+    cutterShankDiameter: number,
+    cutterLength: number
   ) => number,
   inputs: Inputs
 ): number => {
@@ -231,6 +233,7 @@ const fromPositionalToNamed = (
     cutterOverallStickout,
     cutterYoungsModulus,
     cutterShankDiameter,
+    cutterLength,
   } = inputs;
   return fn(
     chipload,
@@ -245,6 +248,7 @@ const fromPositionalToNamed = (
     routerOutputPower,
     cutterOverallStickout,
     cutterYoungsModulus,
-    cutterShankDiameter
+    cutterShankDiameter,
+    cutterLength
   );
 };
