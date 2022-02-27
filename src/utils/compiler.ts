@@ -152,6 +152,7 @@ export const subEquations = (inputs: ConditionalInput) => {
       };
     }, {});
 
+  //@ts-ignore
   const toFunctions: OutputFunctions = Object.entries(subbedWithOutputs).reduce(
     (acc, [key, math]) => {
       const positionalFn = math.buildFunction([
@@ -169,42 +170,10 @@ export const subEquations = (inputs: ConditionalInput) => {
         "cutterYoungsModulus",
         "cutterShankDiameter",
       ]);
-
-      const namedFn = ({
-        chipload,
-        woc,
-        doc,
-        rpm,
-        maxAcceptableDeflection,
-        cutterDiameter,
-        materialKFactor,
-        cutterFlutes,
-        maximumMachineForce,
-        routerOutputPower,
-        cutterOverallStickout,
-        cutterYoungsModulus,
-        cutterShankDiameter,
-      }: Inputs) =>
-        positionalFn(
-          chipload,
-          woc,
-          doc,
-          rpm,
-          maxAcceptableDeflection,
-          cutterDiameter,
-          materialKFactor,
-          cutterFlutes,
-          maximumMachineForce,
-          routerOutputPower,
-          cutterOverallStickout,
-          cutterYoungsModulus,
-          cutterShankDiameter
-        );
-
       return {
         ...acc,
         //@ts-ignore
-        [key]: namedFn,
+        [key]: positionalFn.toString(),
       };
     },
     {}
@@ -213,9 +182,60 @@ export const subEquations = (inputs: ConditionalInput) => {
   return toFunctions;
 };
 
+//@ts-ignore
 const compilerOutputs: CompilerOutput[] = compilerInputs.map(
   (compilerInput) => {
     const functions = subEquations(compilerInput.compilerValues);
     return { condition: compilerInput.condition, functions: functions };
   }
 );
+
+const fromPositionalToNamed = (
+  fn: (
+    chipload: number,
+    woc: number,
+    doc: number,
+    rpm: number,
+    maxAcceptableDeflection: number,
+    cutterDiameter: number,
+    materialKFactor: number,
+    cutterFlutes: number,
+    maximumMachineForce: number,
+    routerOutputPower: number,
+    cutterOverallStickout: number,
+    cutterYoungsModulus: number,
+    cutterShankDiameter: number
+  ) => number,
+  inputs: Inputs
+): number => {
+  const {
+    chipload,
+    woc,
+    doc,
+    rpm,
+    maxAcceptableDeflection,
+    cutterDiameter,
+    materialKFactor,
+    cutterFlutes,
+    maximumMachineForce,
+    routerOutputPower,
+    cutterOverallStickout,
+    cutterYoungsModulus,
+    cutterShankDiameter,
+  } = inputs;
+  return fn(
+    chipload,
+    woc,
+    doc,
+    rpm,
+    maxAcceptableDeflection,
+    cutterDiameter,
+    materialKFactor,
+    cutterFlutes,
+    maximumMachineForce,
+    routerOutputPower,
+    cutterOverallStickout,
+    cutterYoungsModulus,
+    cutterShankDiameter
+  );
+};
