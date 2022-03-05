@@ -98,7 +98,7 @@ export const executeOptimization = ({
           (acc, [key, fn]) => {
             return { ...acc, [key]: fromPositionalToNamed(fn, inputs) };
           },
-          { ...inputs }
+          {}
         );
 
         let constraintFulfilled = true;
@@ -109,7 +109,12 @@ export const executeOptimization = ({
           }
         }
 
-        const resultWithMetadata = { ...result, constraintFulfilled, count };
+        const resultWithMetadata = {
+          ...inputs,
+          ...result,
+          constraintFulfilled,
+          count,
+        };
         count++;
         return resultWithMetadata;
       });
