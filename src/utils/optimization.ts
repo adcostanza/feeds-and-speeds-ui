@@ -143,7 +143,7 @@ const regexes = {
   greaterThanOrEqual: /([A-z]+)\s*>=\s*([0-9\\.]+)/,
 };
 
-class Constraint {
+export class Constraint {
   key: string;
   value: number;
   type: keyof typeof regexes;
