@@ -250,7 +250,9 @@ export default class OptimizationForm extends Vue {
   save() {
     //@ts-ignore
     this.$refs.form.validate();
+    //@ts-ignore
     this.minMaxFields = _.mapValues(this.minMaxFields, (value, key) => {
+      //@ts-ignore
       return _.mapValues(value, (value2, key2) => {
         if (key2 !== "name") {
           //@ts-ignore
@@ -261,6 +263,7 @@ export default class OptimizationForm extends Vue {
       });
     });
 
+    //@ts-ignore
     this.numberFields = _.mapValues(this.numberFields, (value, key) => {
       //@ts-ignore
       return { ...value, value: parseFloat(value.value) };
