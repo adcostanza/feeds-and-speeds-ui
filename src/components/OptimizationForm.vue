@@ -105,7 +105,7 @@
         </v-form>
       </v-col>
     </v-row>
-    <v-row v-if="optimization.results">
+    <v-row v-if="optimization.results && optimization.results.length > 0">
       <v-select
         v-model="tableColumnsToShow"
         @input="tableColumnsToShowUpdate"
@@ -262,11 +262,6 @@ export default class OptimizationForm extends Vue {
     this.tableColumnsToShow = [...this.tableColumnsToShow].sort((a, b) => {
       return this.orderedColumns[a] - this.orderedColumns[b];
     });
-  }
-
-  @Watch("optimization.results", { deep: true })
-  watchResults() {
-    // console.log(this.optimization.results);
   }
 
   created() {
