@@ -36,21 +36,21 @@
           >
             <v-col cols="4"
               ><v-text-field
-                :label="`${field.name} (Min)`"
+                :label="`${field.name} Min (in)`"
                 v-model="minMaxFields[key].min"
                 :rules="[requiredRule('Min')]"
               ></v-text-field
             ></v-col>
             <v-col cols="4">
               <v-text-field
-                :label="`${field.name} (Max)`"
+                :label="`${field.name} Max (in)`"
                 v-model="minMaxFields[key].max"
                 :rules="[requiredRule('Max')]"
               ></v-text-field
             ></v-col>
             <v-col cols="4">
               <v-text-field
-                :label="`${field.name} (Count)`"
+                :label="`${field.name} Count (#)`"
                 v-model="minMaxFields[key].count"
                 :rules="[requiredRule('Count')]"
               ></v-text-field
@@ -188,7 +188,7 @@ export default class OptimizationForm extends Vue {
   numberFields = {
     rpm: { name: "RPM", value: 0 },
     maxAcceptableDeflection: {
-      name: "Maximum Acceptable Deflection",
+      name: "Maximum Acceptable Deflection (in)",
       value: 0,
     },
   };
