@@ -21,6 +21,7 @@ export interface Optimization {
   rpm: number;
 
   results: Record<string, number>[];
+  tableColumnsToShow: string[];
 }
 
 export const optimizationsStore = new Store<Optimization[]>(

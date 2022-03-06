@@ -106,26 +106,35 @@
       </v-col>
     </v-row>
     <v-row v-if="optimization.results">
+      <v-select
+        v-model="tableColumnsToShow"
+        :items="Object.keys(optimization.results[0])"
+        label="Select"
+        multiple
+        chips
+        hint="Which Columns to Show"
+        persistent-hint
+      ></v-select>
       <v-simple-table>
         <template v-slot:default>
           <thead>
             <tr>
               <th
-                v-for="key of Object.keys(optimization.results[0])"
-                :key="key"
+                v-for="column of tableColumnsToShow"
+                :key="column"
                 class="text-left"
               >
-                {{ key }}
+                {{ column }}
               </th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="[i, result] of optimization.results.entries()" :key="i">
-              <td
-                v-for="[key, resultValue] of Object.entries(result)"
-                :key="key"
-              >
-                {{ resultValue }}
+            <tr
+              v-for="[key, row] of Object.entries(optimization.results)"
+              :key="key"
+            >
+              <td v-for="column of tableColumnsToShow" :key="column">
+                {{ row[column] }}
               </td>
             </tr>
           </tbody>
@@ -177,10 +186,23 @@ export default class OptimizationForm extends Vue {
   numberFields = {
     rpm: { name: "RPM", value: 0 },
     maxAcceptableDeflection: {
-      name: "Maximum Acceptable Deflection %",
+      name: "Maximum Acceptable Deflection",
       value: 0,
     },
   };
+
+  tableColumnsToShow = [
+    "chipload",
+    "woc",
+    "doc",
+    "feedrate",
+    "materialRemovalRate",
+    "machineForcePercent",
+    "availablePowerPercent",
+    "maxDeflectionPercent",
+    "constraintFulfilled",
+    "count",
+  ];
 
   @Watch("optimization.results", { deep: true })
   watchResults() {
@@ -194,6 +216,12 @@ export default class OptimizationForm extends Vue {
     this.cutter = this.optimization.cutter;
     this.material = this.optimization.material;
     this.constraints = this.optimization.constraints.join("\n");
+    if (
+      this.optimization.tableColumnsToShow &&
+      this.optimization.tableColumnsToShow.length > 0
+    ) {
+      this.tableColumnsToShow = [...this.optimization.tableColumnsToShow];
+    }
     for (const numberField of Object.keys(this.numberFields)) {
       this.numberFields[numberField].value = this.optimization[numberField];
     }
@@ -258,6 +286,7 @@ export default class OptimizationForm extends Vue {
       maxAcceptableDeflection: this.numberFields.maxAcceptableDeflection.value,
       //@ts-ignore
       results: results,
+      tableColumnsToShow: [...this.tableColumnsToShow],
     });
   }
 
