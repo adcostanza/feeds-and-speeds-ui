@@ -135,7 +135,7 @@
               :key="key"
             >
               <td v-for="column of tableColumnsToShow" :key="column">
-                {{ row[column] }}
+                {{ valueDisplayForTable(column, row[column]) }}
               </td>
             </tr>
           </tbody>
@@ -241,6 +241,7 @@ export default class OptimizationForm extends Vue {
     },
     {}
   );
+
   columnDisplayText(column: string): string {
     if (units[column]) {
       return `${column} (${units[column].unit})`;
@@ -248,6 +249,15 @@ export default class OptimizationForm extends Vue {
       return column;
     }
   }
+
+  valueDisplayForTable(column: string, value: number): string {
+    if (units[column]) {
+      return units[column].formatting(value);
+    } else {
+      return value;
+    }
+  }
+
   tableColumnsToShowUpdate(values: string[]) {
     this.tableColumnsToShow = [...this.tableColumnsToShow].sort((a, b) => {
       return this.orderedColumns[a] - this.orderedColumns[b];
