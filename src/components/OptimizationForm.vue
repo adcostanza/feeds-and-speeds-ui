@@ -261,6 +261,7 @@ export default class OptimizationForm extends Vue {
     });
 
     this.numberFields = _.mapValues(this.numberFields, (value, key) => {
+      //@ts-ignore
       return { ...value, value: parseFloat(value.value) };
     });
 
