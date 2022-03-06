@@ -150,7 +150,7 @@ export class Constraint {
   constructor(private stringValue: string) {
     for (const [type, regex] of Object.entries(regexes)) {
       const matches = stringValue.match(regex);
-      if (matches.length >= 3) {
+      if (matches && matches.length >= 3) {
         if (isNumeric(matches[2])) {
           this.value = parseFloat(matches[2]);
           this.key = matches[1];

@@ -1,8 +1,23 @@
 import { Constraint } from "@/utils/optimization"
 
 test("constraints", () => {
-    const constraint = new Constraint("feedrate > 100")
-    expect(constraint.key).toEqual("feedrate")
-    expect(constraint.value).toEqual("100")
-    expect(constraint.type).toEqual("moreThan")
+    const greaterThanConstraint = new Constraint("feedrate > 100")
+    expect(greaterThanConstraint.key).toEqual("feedrate")
+    expect(greaterThanConstraint.value).toEqual(100)
+    expect(greaterThanConstraint.type).toEqual("greaterThan")
+
+    const greaterThanOrEqualConstraint = new Constraint("feedrate >= 100")
+    expect(greaterThanOrEqualConstraint.key).toEqual("feedrate")
+    expect(greaterThanOrEqualConstraint.value).toEqual(100)
+    expect(greaterThanOrEqualConstraint.type).toEqual("greaterThanOrEqual")
+
+    const lessThanConstraint = new Constraint("feedrate < 100")
+    expect(lessThanConstraint.key).toEqual("feedrate")
+    expect(lessThanConstraint.value).toEqual(100)
+    expect(lessThanConstraint.type).toEqual("lessThan")
+
+    const lessThanOrEqualConstraint = new Constraint("feedrate <= 100")
+    expect(lessThanOrEqualConstraint.key).toEqual("feedrate")
+    expect(lessThanOrEqualConstraint.value).toEqual(100)
+    expect(lessThanOrEqualConstraint.type).toEqual("lessThanOrEqual")
 })
