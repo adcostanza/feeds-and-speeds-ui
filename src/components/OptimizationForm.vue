@@ -37,21 +37,21 @@
             <v-col cols="4"
               ><v-text-field
                 :label="`${field.name} (Min)`"
-                v-model="minMaxFields[key].min"
+                v-model.number="minMaxFields[key].min"
                 :rules="[requiredRule('Min')]"
               ></v-text-field
             ></v-col>
             <v-col cols="4">
               <v-text-field
                 :label="`${field.name} (Max)`"
-                v-model="minMaxFields[key].max"
+                v-model.number="minMaxFields[key].max"
                 :rules="[requiredRule('Max')]"
               ></v-text-field
             ></v-col>
             <v-col cols="4">
               <v-text-field
                 :label="`${field.name} (Count)`"
-                v-model="minMaxFields[key].count"
+                v-model.number="minMaxFields[key].count"
                 :rules="[requiredRule('Count')]"
               ></v-text-field
             ></v-col>

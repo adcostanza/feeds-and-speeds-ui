@@ -36,7 +36,11 @@ export interface MinMaxField {
 }
 
 const range = ({ min, max, count }: MinMaxField): number[] => {
-  return _.range(min, max, (max - min) / count);
+  if (count === 1) {
+    return [min];
+  }
+  const step = (max - min) / (count - 1);
+  return _.range(min, max + step, step);
 };
 
 export const executeOptimization = ({
