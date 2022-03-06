@@ -37,21 +37,21 @@
             <v-col cols="4"
               ><v-text-field
                 :label="`${field.name} (Min)`"
-                v-model.number="minMaxFields[key].min"
+                v-model="minMaxFields[key].min"
                 :rules="[requiredRule('Min')]"
               ></v-text-field
             ></v-col>
             <v-col cols="4">
               <v-text-field
                 :label="`${field.name} (Max)`"
-                v-model.number="minMaxFields[key].max"
+                v-model="minMaxFields[key].max"
                 :rules="[requiredRule('Max')]"
               ></v-text-field
             ></v-col>
             <v-col cols="4">
               <v-text-field
                 :label="`${field.name} (Count)`"
-                v-model.number="minMaxFields[key].count"
+                v-model="minMaxFields[key].count"
                 :rules="[requiredRule('Count')]"
               ></v-text-field
             ></v-col>
@@ -105,7 +105,7 @@
         </v-form>
       </v-col>
     </v-row>
-    <v-row>
+    <v-row v-if="optimization.results">
       <v-simple-table>
         <template v-slot:default>
           <thead>
@@ -137,7 +137,7 @@
 
 <script lang="ts">
 import Component from "vue-class-component";
-import { Prop, Vue } from "vue-property-decorator";
+import { Prop, Vue, Watch } from "vue-property-decorator";
 import { Machine } from "@/utils/machine";
 import { Cutter } from "@/utils/cutter";
 import { Material } from "@/utils/material";
@@ -147,6 +147,7 @@ import {
   MinMaxField,
   Optimization,
 } from "@/utils/optimization";
+import _ from "lodash";
 
 @Component
 export default class OptimizationForm extends Vue {
@@ -180,6 +181,11 @@ export default class OptimizationForm extends Vue {
       value: 0,
     },
   };
+
+  @Watch("optimization.results", { deep: true })
+  watchResults() {
+    // console.log(this.optimization.results);
+  }
 
   created() {
     //@ts-ignore
@@ -216,6 +222,20 @@ export default class OptimizationForm extends Vue {
   save() {
     //@ts-ignore
     this.$refs.form.validate();
+    this.minMaxFields = _.mapValues(this.minMaxFields, (value, key) => {
+      return _.mapValues(value, (value2, key2) => {
+        if (key2 !== "name") {
+          return parseFloat(value2);
+        } else {
+          return value2;
+        }
+      });
+    });
+
+    this.numberFields = _.mapValues(this.numberFields, (value, key) => {
+      return { ...value, value: parseFloat(value.value) };
+    });
+
     const results = executeOptimization({
       minMaxFields: this.minMaxFields,
       numberFields: this.numberFields,

@@ -61,7 +61,6 @@ export const executeOptimization = ({
   const docs = range(minMaxFields.doc);
   const wocs = range(minMaxFields.woc);
   const chiploads = range(minMaxFields.chipload);
-
   const constraints = constraintStrings.map((ea) => {
     return new Constraint(ea);
   });

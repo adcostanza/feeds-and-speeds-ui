@@ -183,23 +183,6 @@ export const subEquations = (inputs: ConditionalInput) => {
   return toFunctions;
 };
 
-//@ts-ignore
-const compilerOutputs: CompilerOutput[] = compilerInputs.map(
-  (compilerInput) => {
-    const functions = subEquations(compilerInput.compilerValues);
-    return {
-      condition: compilerInput.condition.toString(),
-      functions: functions,
-    };
-  }
-);
-
-const json = JSON.stringify(compilerOutputs)
-  .replaceAll('"', "")
-  .replaceAll("\\n", "");
-
-console.log(json);
-
 export const fromPositionalToNamed = (
   fn: (
     chipload: number,
@@ -252,3 +235,24 @@ export const fromPositionalToNamed = (
     cutterLength
   );
 };
+
+const execute = () => {
+  //@ts-ignore
+  const compilerOutputs: CompilerOutput[] = compilerInputs.map(
+    (compilerInput) => {
+      const functions = subEquations(compilerInput.compilerValues);
+      return {
+        condition: compilerInput.condition.toString(),
+        functions: functions,
+      };
+    }
+  );
+
+  const json = JSON.stringify(compilerOutputs)
+    .replaceAll('"', "")
+    .replaceAll("\\n", "");
+
+  console.log(json);
+};
+
+// execute();
