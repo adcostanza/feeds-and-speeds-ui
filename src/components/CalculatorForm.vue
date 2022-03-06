@@ -100,7 +100,7 @@
 
 <script lang="ts">
 import Component from "vue-class-component";
-import { Prop, Vue } from "vue-property-decorator";
+import { Prop, Vue, Watch } from "vue-property-decorator";
 import {
   allMathStrings,
   Calculator,
@@ -113,6 +113,7 @@ import { Cutter, getYoungsModulus } from "@/utils/cutter";
 import { Material } from "@/utils/material";
 import nerdamer from "nerdamer";
 import { units } from "@/utils/units";
+import _ from "lodash";
 
 @Component
 export default class CalculatorForm extends Vue {
@@ -156,9 +157,24 @@ export default class CalculatorForm extends Vue {
       this.inputs.cutterShankDiameter
     );
   }
-
   get allValues() {
-    return iterativelySubbed(this.inputs);
+    try {
+      return iterativelySubbed(this.inputs);
+    } catch {
+      return {
+        adjustedChipload: 0,
+        feedrate: 0,
+        materialRemovalRate: 0,
+        powerUsage: 0,
+        torque: 0,
+        machineForce: 0,
+        machineForcePercent: 0,
+        availablePowerPercent: 0,
+        routerCutterPowerIncrease: 0,
+        maxDeflection: 0,
+        maxDeflectionPercent: 0,
+      };
+    }
   }
 
   valueDisplay(column: string, value: number): string {

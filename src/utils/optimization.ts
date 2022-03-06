@@ -1,11 +1,10 @@
-import { getOutputPower, Machine } from "@/utils/machine";
-import { Cutter, getYoungsModulus } from "@/utils/cutter";
-import { Material } from "@/utils/material";
-import { Store } from "@/utils/store";
-import { iterativelySubbed } from "@/utils/calculator";
+import {getOutputPower, Machine} from "@/utils/machine";
+import {Cutter, getYoungsModulus} from "@/utils/cutter";
+import {Material} from "@/utils/material";
+import {Store} from "@/utils/store";
 import * as _ from "lodash";
-import { compiledFunctions } from "@/utils/compiled";
-import { fromPositionalToNamed } from "@/utils/compiler";
+import {compiledFunctions} from "@/utils/compiled";
+import {fromPositionalToNamed} from "@/utils/compiler";
 
 export interface Optimization {
   name: string;
