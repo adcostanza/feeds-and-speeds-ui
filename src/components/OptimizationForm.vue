@@ -253,6 +253,7 @@ export default class OptimizationForm extends Vue {
     this.minMaxFields = _.mapValues(this.minMaxFields, (value, key) => {
       return _.mapValues(value, (value2, key2) => {
         if (key2 !== "name") {
+          //@ts-ignore
           return parseFloat(value2);
         } else {
           return value2;
