@@ -28,25 +28,25 @@
         <v-text-field
           v-model.number="machine.router.inputVoltage"
           :rules="[requiredRule('Input Voltage')]"
-          label="Input Voltage"
+          label="Input Voltage (V)"
           required
         ></v-text-field>
         <v-text-field
           v-model.number="machine.router.inputCurrent"
           :rules="[requiredRule('Input Current')]"
-          label="Input Current"
+          label="Input Current (A)"
           required
         ></v-text-field>
         <v-text-field
           v-model.number="machine.router.efficiency"
           :rules="[requiredRule('Efficiency')]"
-          label="Efficiency"
+          label="Efficiency (Decimal)"
           required
         ></v-text-field>
         <v-text-field
           v-model.number="machine.router.ratedSpeed"
           :rules="[requiredRule('Rated Speed')]"
-          label="Rated Speed"
+          label="Rated Speed (RPM)"
           required
         ></v-text-field>
       </div>

@@ -83,7 +83,7 @@
                   ></div>
                 </td>
                 <td>
-                  {{ value }}
+                  {{ valueDisplay(key, value) }}
                 </td>
               </tr>
             </tbody>
@@ -112,6 +112,7 @@ import { getOutputPower, Machine } from "@/utils/machine";
 import { Cutter, getYoungsModulus } from "@/utils/cutter";
 import { Material } from "@/utils/material";
 import nerdamer from "nerdamer";
+import { units } from "@/utils/units";
 
 @Component
 export default class CalculatorForm extends Vue {
@@ -129,26 +130,6 @@ export default class CalculatorForm extends Vue {
 
   showEquations = true;
 
-  formatOutputNumber(name: string, number: number): string {
-    if (name.toLowerCase().endsWith("percent")) {
-      return `${(number * 100).toFixed(2)}%`;
-    } else {
-      let fixedDigits;
-      if (number > 0.1 && number < 100) {
-        fixedDigits = 2;
-      } else if (number > 100) {
-        fixedDigits = 1;
-      } else if (number < 0.01) {
-        fixedDigits = 4;
-      } else if (number < 0.001) {
-        fixedDigits = 4;
-      } else {
-        fixedDigits = 6;
-      }
-      return number.toFixed(fixedDigits);
-    }
-  }
-
   get inputs(): Inputs {
     return {
       chipload: this.numberFields.chipload.value,
@@ -164,7 +145,7 @@ export default class CalculatorForm extends Vue {
       cutterOverallStickout: this.cutter.overallStickout,
       cutterYoungsModulus: getYoungsModulus(this.cutter.material),
       cutterShankDiameter: this.cutter.shankDiameter,
-      cutterLength: this.cutter.length
+      cutterLength: this.cutter.length,
     };
   }
 
@@ -180,6 +161,14 @@ export default class CalculatorForm extends Vue {
     return iterativelySubbed(this.inputs);
   }
 
+  valueDisplay(column: string, value: number): string {
+    if (units[column]) {
+      return `${units[column].formatting(value)} ${units[column].unit}`;
+    } else {
+      return value;
+    }
+  }
+
   asTex(key: string) {
     return nerdamer(this.allMath[key]).toTeX();
   }
@@ -190,12 +179,12 @@ export default class CalculatorForm extends Vue {
   }
 
   numberFields = {
-    chipload: { name: "Chipload", value: 0 },
-    woc: { name: "Width of Cut", value: 0 },
-    doc: { name: "Depth of Cut", value: 0 },
+    chipload: { name: "Chipload (in)", value: 0 },
+    woc: { name: "Width of Cut (in)", value: 0 },
+    doc: { name: "Depth of Cut (in)", value: 0 },
     rpm: { name: "RPM", value: 0 },
     maxAcceptableDeflection: {
-      name: "Maximum Acceptable Deflection %",
+      name: "Maximum Acceptable Deflection (in)",
       value: 0,
     },
   };

@@ -69,12 +69,12 @@ export default class CutterForm extends Vue {
   materials = Object.values(CutterMaterial);
 
   numberFields = {
-    diameter: { name: "Diameter", value: 0 },
-    length: { name: "Flute Length", value: 0 },
+    diameter: { name: "Diameter (in)", value: 0 },
+    length: { name: "Flute Length (in)", value: 0 },
     flutes: { name: "Number of Flutes", value: 0 },
-    shankDiameter: { name: "Shank Diameter", value: 0 },
+    shankDiameter: { name: "Shank Diameter (in)", value: 0 },
     overallStickout: {
-      name: "Overall Stickout",
+      name: "Overall Stickout (in)",
       value: 0,
     },
   };

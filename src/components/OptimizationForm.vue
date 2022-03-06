@@ -36,21 +36,21 @@
           >
             <v-col cols="4"
               ><v-text-field
-                :label="`${field.name} (Min)`"
+                :label="`${field.name} Min (in)`"
                 v-model="minMaxFields[key].min"
                 :rules="[requiredRule('Min')]"
               ></v-text-field
             ></v-col>
             <v-col cols="4">
               <v-text-field
-                :label="`${field.name} (Max)`"
+                :label="`${field.name} Max (in)`"
                 v-model="minMaxFields[key].max"
                 :rules="[requiredRule('Max')]"
               ></v-text-field
             ></v-col>
             <v-col cols="4">
               <v-text-field
-                :label="`${field.name} (Count)`"
+                :label="`${field.name} Count (#)`"
                 v-model="minMaxFields[key].count"
                 :rules="[requiredRule('Count')]"
               ></v-text-field
@@ -108,6 +108,7 @@
     <v-row v-if="optimization.results">
       <v-select
         v-model="tableColumnsToShow"
+        @input="tableColumnsToShowUpdate"
         :items="Object.keys(optimization.results[0])"
         label="Select"
         multiple
@@ -124,7 +125,7 @@
                 :key="column"
                 class="text-left"
               >
-                {{ column }}
+                {{ columnDisplayText(column) }}
               </th>
             </tr>
           </thead>
@@ -134,7 +135,7 @@
               :key="key"
             >
               <td v-for="column of tableColumnsToShow" :key="column">
-                {{ row[column] }}
+                {{ valueDisplayForTable(column, row[column]) }}
               </td>
             </tr>
           </tbody>
@@ -157,6 +158,7 @@ import {
   Optimization,
 } from "@/utils/optimization";
 import _ from "lodash";
+import { units } from "@/utils/units";
 
 @Component
 export default class OptimizationForm extends Vue {
@@ -186,7 +188,7 @@ export default class OptimizationForm extends Vue {
   numberFields = {
     rpm: { name: "RPM", value: 0 },
     maxAcceptableDeflection: {
-      name: "Maximum Acceptable Deflection",
+      name: "Maximum Acceptable Deflection (in)",
       value: 0,
     },
   };
@@ -203,6 +205,64 @@ export default class OptimizationForm extends Vue {
     "constraintFulfilled",
     "count",
   ];
+
+  orderedColumns = _.reduce(
+    [
+      "chipload",
+      "woc",
+      "doc",
+      "rpm",
+      "maxAcceptableDeflection",
+      "cutterDiameter",
+      "materialKFactor",
+      "cutterFlutes",
+      "maximumMachineForce",
+      "routerOutputPower",
+      "cutterOverallStickout",
+      "cutterYoungsModulus",
+      "cutterShankDiameter",
+      "cutterLength",
+      "adjustedChipload",
+      "feedrate",
+      "materialRemovalRate",
+      "powerUsage",
+      "torque",
+      "machineForce",
+      "machineForcePercent",
+      "availablePowerPercent",
+      "routerCutterPowerIncrease",
+      "maxDeflection",
+      "maxDeflectionPercent",
+      "constraintFulfilled",
+      "count",
+    ],
+    (acc, value, key) => {
+      return { ...acc, [value]: key };
+    },
+    {}
+  );
+
+  columnDisplayText(column: string): string {
+    if (units[column]) {
+      return `${column} (${units[column].unit})`;
+    } else {
+      return column;
+    }
+  }
+
+  valueDisplayForTable(column: string, value: number): string {
+    if (units[column]) {
+      return units[column].formatting(value);
+    } else {
+      return value;
+    }
+  }
+
+  tableColumnsToShowUpdate(values: string[]) {
+    this.tableColumnsToShow = [...this.tableColumnsToShow].sort((a, b) => {
+      return this.orderedColumns[a] - this.orderedColumns[b];
+    });
+  }
 
   @Watch("optimization.results", { deep: true })
   watchResults() {

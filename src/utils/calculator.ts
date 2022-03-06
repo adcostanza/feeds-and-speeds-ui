@@ -113,26 +113,6 @@ export const allMathStrings = (
   maxDeflectionPercent: maxDeflectionPercent,
 });
 
-const formatOutputNumber = (name: string, number: number): string => {
-  if (name.toLowerCase().endsWith("percent")) {
-    return `${(number * 100).toFixed(2)}%`;
-  } else {
-    let fixedDigits;
-    if (number > 0.1 && number < 100) {
-      fixedDigits = 2;
-    } else if (number > 100) {
-      fixedDigits = 1;
-    } else if (number < 0.01) {
-      fixedDigits = 4;
-    } else if (number < 0.001) {
-      fixedDigits = 4;
-    } else {
-      fixedDigits = 6;
-    }
-    return number.toFixed(fixedDigits);
-  }
-};
-
 export interface Inputs {
   chipload: number;
   woc: number;
@@ -150,7 +130,7 @@ export interface Inputs {
   cutterLength: number;
 }
 
-export const iterativelySubbed = (inputs: Inputs, withFormatting = true) => {
+export const iterativelySubbed = (inputs: Inputs) => {
   const allMath = allMathStrings(
     inputs.woc,
     inputs.cutterDiameter,
@@ -178,14 +158,7 @@ export const iterativelySubbed = (inputs: Inputs, withFormatting = true) => {
     {}
   );
 
-  if (withFormatting) {
-    return Object.entries(subbedWithOutputs).reduce((acc, [key, value]) => {
-      //@ts-ignore
-      return { ...acc, [key]: formatOutputNumber(key, value) };
-    }, {});
-  } else {
-    return subbedWithOutputs;
-  }
+  return subbedWithOutputs;
 };
 
 export const fullySubbed = (
