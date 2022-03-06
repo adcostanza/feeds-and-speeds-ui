@@ -125,7 +125,7 @@
                 :key="column"
                 class="text-left"
               >
-                {{ column }}
+                {{ columnDisplayText(column) }}
               </th>
             </tr>
           </thead>
@@ -158,6 +158,7 @@ import {
   Optimization,
 } from "@/utils/optimization";
 import _ from "lodash";
+import { units } from "@/utils/units";
 
 @Component
 export default class OptimizationForm extends Vue {
@@ -240,7 +241,13 @@ export default class OptimizationForm extends Vue {
     },
     {}
   );
-
+  columnDisplayText(column: string): string {
+    if (units[column]) {
+      return `${column} (${units[column].unit})`;
+    } else {
+      return column;
+    }
+  }
   tableColumnsToShowUpdate(values: string[]) {
     this.tableColumnsToShow = [...this.tableColumnsToShow].sort((a, b) => {
       return this.orderedColumns[a] - this.orderedColumns[b];
