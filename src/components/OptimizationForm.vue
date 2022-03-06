@@ -108,6 +108,7 @@
     <v-row v-if="optimization.results">
       <v-select
         v-model="tableColumnsToShow"
+        @input="tableColumnsToShowUpdate"
         :items="Object.keys(optimization.results[0])"
         label="Select"
         multiple
@@ -203,6 +204,48 @@ export default class OptimizationForm extends Vue {
     "constraintFulfilled",
     "count",
   ];
+
+  orderedColumns = _.reduce(
+    [
+      "chipload",
+      "woc",
+      "doc",
+      "rpm",
+      "maxAcceptableDeflection",
+      "cutterDiameter",
+      "materialKFactor",
+      "cutterFlutes",
+      "maximumMachineForce",
+      "routerOutputPower",
+      "cutterOverallStickout",
+      "cutterYoungsModulus",
+      "cutterShankDiameter",
+      "cutterLength",
+      "adjustedChipload",
+      "feedrate",
+      "materialRemovalRate",
+      "powerUsage",
+      "torque",
+      "machineForce",
+      "machineForcePercent",
+      "availablePowerPercent",
+      "routerCutterPowerIncrease",
+      "maxDeflection",
+      "maxDeflectionPercent",
+      "constraintFulfilled",
+      "count",
+    ],
+    (acc, value, key) => {
+      return { ...acc, [value]: key };
+    },
+    {}
+  );
+
+  tableColumnsToShowUpdate(values: string[]) {
+    this.tableColumnsToShow = [...this.tableColumnsToShow].sort((a, b) => {
+      return this.orderedColumns[a] - this.orderedColumns[b];
+    });
+  }
 
   @Watch("optimization.results", { deep: true })
   watchResults() {
