@@ -36,5 +36,5 @@ export const units: Record<string, Unit> = {
   routerCutterPowerIncrease: { formatting: fixedDigits(4), unit: "in" },
   maxDeflection: { formatting: fixedDigits(4), unit: "in" },
   maxDeflectionPercent: { formatting: fixedDigitsPercent(1), unit: "%" },
-  count: { formatting: fixedDigits(0), unit: "" },
+  iteration: { formatting: fixedDigits(0), unit: "" },
 };

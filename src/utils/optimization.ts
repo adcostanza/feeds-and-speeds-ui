@@ -65,7 +65,7 @@ export const executeOptimization = ({
     return new Constraint(ea);
   });
 
-  let count = 1;
+  let iteration = 1;
   const values = _.flatMap(docs, (doc) => {
     return _.flatMap(wocs, (woc) => {
       return chiploads.map((chipload) => {
@@ -116,9 +116,9 @@ export const executeOptimization = ({
           ...inputs,
           ...result,
           constraintFulfilled,
-          count,
+          iteration,
         };
-        count++;
+        iteration++;
         return resultWithMetadata;
       });
     });

@@ -100,7 +100,7 @@
 
 <script lang="ts">
 import Component from "vue-class-component";
-import { Prop, Vue, Watch } from "vue-property-decorator";
+import { Prop, Vue } from "vue-property-decorator";
 import {
   allMathStrings,
   Calculator,
@@ -113,7 +113,6 @@ import { Cutter, getYoungsModulus } from "@/utils/cutter";
 import { Material } from "@/utils/material";
 import nerdamer from "nerdamer";
 import { units } from "@/utils/units";
-import _ from "lodash";
 
 @Component
 export default class CalculatorForm extends Vue {

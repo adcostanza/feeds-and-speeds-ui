@@ -203,7 +203,7 @@ export default class OptimizationForm extends Vue {
     "availablePowerPercent",
     "maxDeflectionPercent",
     "constraintFulfilled",
-    "count",
+    "iteration",
   ];
 
   orderedColumns = _.reduce(
@@ -234,7 +234,7 @@ export default class OptimizationForm extends Vue {
       "maxDeflection",
       "maxDeflectionPercent",
       "constraintFulfilled",
-      "count",
+      "iteration",
     ],
     (acc, value, key) => {
       return { ...acc, [value]: key };
@@ -243,7 +243,7 @@ export default class OptimizationForm extends Vue {
   );
 
   columnDisplayText(column: string): string {
-    if (units[column]) {
+    if (units[column] && units[column].unit) {
       return `${column} (${units[column].unit})`;
     } else {
       return column;
