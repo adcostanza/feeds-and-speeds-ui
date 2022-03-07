@@ -1,3 +1,9 @@
+CURRENT_BRANCH=$(git branch --show-current)
+git checkout --orphan gh-pages
 npm run build
-git add dist && git commit -m 'adding dist subtree'
-git subtree push --prefix dist origin gh-pages
+git --work-tree dist add --all
+git --work-tree dist commit -m "gh-pages"
+git push origin HEAD:gh-pages --force
+rm -r dist
+git checkout -f ${CURRENT_BRANCH}
+git branch -D gh-pages
